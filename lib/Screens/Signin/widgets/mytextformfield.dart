@@ -4,10 +4,11 @@ Widget myTextFormField(
     {required String hintText,
     String? lable,
     bool? obscureText,
-    Widget? icon}) {
+    Widget? icon,TextEditingController? textEditingController}) {
   return Directionality(
     textDirection: TextDirection.rtl,
     child: TextFormField(
+      controller: textEditingController,
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
           prefixIcon: icon,
