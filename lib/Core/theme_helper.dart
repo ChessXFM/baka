@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ThemeHelper {
   static const Color primaryColor = Color.fromARGB(255, 90, 23, 121);

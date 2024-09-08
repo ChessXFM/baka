@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/Core/constant.dart';
-import 'package:game/Core/theme_helper.dart';
 import 'package:game/Screens/Home/home_screen.dart';
 import 'package:game/features/auth/logic/bloc/auth_bloc.dart';
 import 'package:game/features/auth/logic/bloc/auth_event.dart';

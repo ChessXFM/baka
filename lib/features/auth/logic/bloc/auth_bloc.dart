@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepository.signIn(event.email, event.password);
       emit(Authenticated());
     } catch (e) {
-      emit(AuthError('فشل تسجيل الدخول .. قد تحتاج لتشغيل VPN'));
+      emit(const AuthError('فشل تسجيل الدخول .. قد تحتاج لتشغيل VPN'));
     }
   }
 }
