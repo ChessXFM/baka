@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game/Core/constant.dart';
 import 'package:game/Core/theme_helper.dart';
 import 'package:game/Screens/Home/home_screen.dart';
 import 'package:game/features/auth/logic/bloc/auth_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:game/features/auth/logic/bloc/auth_event.dart';
 import 'package:game/features/auth/logic/bloc/auth_state.dart';
 import 'package:game/features/auth/presentation/Signin/widgets/mytextformfield.dart';
 import 'package:game/features/auth/presentation/Signin/widgets/password_field.dart';
+import 'package:game/features/auth/presentation/Signup/signup.dart';
 
 class SignInScreen extends StatelessWidget {
   static const String routeName = "/sign_in";
@@ -64,98 +66,127 @@ class SignInScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: ThemeHelper.primaryColor,
-        body: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is Authenticated) {
-              // Navigate to HomeScreen
-              Navigator.pushNamed(context, HomeScreen.routeName);
-            } else if (state is AuthError) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
-            }
-          },
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              // Email input field
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: myTextFormField(
-                  textEditingController: emailController,
-                  hintText: "example@gmail.com",
-                  lable: 'البريد الإلكتروني',
-                ),
-              ),
-              const SizedBox(height: 15),
-              // Password input field
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: PasswordField(
-                  controller: passwordController,
-                ),
-              ),
-              const SizedBox(height: 60),
-              // Sign-in button with BlocBuilder
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthLoading) {
-                    return const CircularProgressIndicator();
-                  }
-                  return GestureDetector(
-                    onTap: () => _onSignInButtonPressed(context),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: Colors.purple,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'تسجيل الدخول',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+        // backgroundColor: ThemeHelper.primaryColor,
+        body: Stack(alignment: Alignment.bottomCenter, children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/background.jpg'))),
+          ),
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is Authenticated) {
+                // Navigate to HomeScreen
+                Navigator.pushNamed(context, HomeScreen.routeName);
+              } else if (state is AuthError) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.message)));
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(70),
+                      topRight: Radius.circular(70)),
+                  boxShadow: const [
+                    BoxShadow(
+                        blurRadius: 400,
+                        blurStyle: BlurStyle.inner,
+                        color: Colors.white)
+                  ]),
+              height: (ScreenSizeHelper.mobileScreenHeight(context)) * 70 / 100,
+              width: (ScreenSizeHelper.mobileScreenWidth(context)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  // Email input field
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: myTextFormField(
+                      textEditingController: emailController,
+                      hintText: "example@gmail.com",
+                      lable: 'البريد الإلكتروني',
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  // Password input field
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: PasswordField(
+                      controller: passwordController,
+                    ),
+                  ),
+                  const SizedBox(height: 60),
+                  // Sign-in button with BlocBuilder
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthLoading) {
+                        return const CircularProgressIndicator();
+                      }
+                      return GestureDetector(
+                        onTap: () => _onSignInButtonPressed(context),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              color: Colors.purple,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(40)),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'تسجيل الدخول',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 60),
-              // Sign-up prompt
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    ' قم بالتسجيل الان ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.purple,
-                      fontWeight: FontWeight.bold,
-                    ),
+                      );
+                    },
                   ),
-                  Text(
-                    'ليس لديك حساب ؟ ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  const SizedBox(height: 60),
+                  // Sign-up prompt
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, SignUpScreen.routeName);
+                        },
+                        child: const Text(
+                          ' قم بالتسجيل الان ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.purple,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        'ليس لديك حساب ؟ ',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ]),
       ),
     );
   }
