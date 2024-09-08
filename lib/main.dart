@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/Screens/Home/home_screen.dart';
+import 'package:game/features/auth/data/repositories/auth_repository.dart';
+import 'package:game/features/auth/logic/bloc/auth_bloc.dart';
 import 'package:game/features/auth/presentation/Signin/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'features/auth/presentation/Signup/signup.dart';
@@ -12,22 +15,28 @@ void main(List<String> args) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+   MyApp({super.key});
+final AuthRepository authRepository = AuthRepository();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:  SignInScreen(),
-      routes: {
-        SignInScreen.routeName: (context) =>  SignInScreen(),
-        SignUpScreen.routeName: (context) =>  SignUpScreen(),
-        HomeScreen.routeName:(context) => const HomeScreen(),
-      },
+    return RepositoryProvider.value(
+      value: authRepository,
+      child: BlocProvider(
+        create: (context) => AuthBloc(authRepository: authRepository),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home:  SignInScreen(),
+          routes: {
+            SignInScreen.routeName: (context) =>  SignInScreen(),
+            SignUpScreen.routeName: (context) =>  SignUpScreen(),
+            HomeScreen.routeName:(context) => const HomeScreen(),
+          },
+        ),
+      ),
     );
   }
 }
