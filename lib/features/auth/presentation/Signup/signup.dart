@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game/Core/theme_helper.dart';
 
-import '../../Core/constant.dart';
+import '../../../../Core/constant.dart';
 import '../Signin/widgets/mytextformfield.dart';
 
 class SignUpScreen extends StatelessWidget {
