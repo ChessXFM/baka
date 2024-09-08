@@ -33,6 +33,7 @@ class SignUpScreen extends StatelessWidget {
         body: Center(
             child: Container(
           decoration: BoxDecoration(
+              image:const DecorationImage(image: AssetImage('asset/images/background.jpg')),
               border: Border.all(color: Colors.white),
               borderRadius: BorderRadius.circular(50),
               boxShadow: const [

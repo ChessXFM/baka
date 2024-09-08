@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game/Screens/Home/home_screen.dart';
 import 'package:game/Screens/Signin/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Screens/Signup/signup.dart';
 import 'firebase_options.dart';
 
 // ...
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       home:  SignInScreen(),
       routes: {
         SignInScreen.routeName: (context) =>  SignInScreen(),
+        SignUpScreen.routeName: (context) =>  SignUpScreen(),
         HomeScreen.routeName:(context) => const HomeScreen(),
       },
     );
