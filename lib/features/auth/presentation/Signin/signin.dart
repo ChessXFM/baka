@@ -57,7 +57,9 @@ class SignInScreen extends StatelessWidget {
     }
 
     // Trigger the sign-in event
-    context.read<AuthBloc>().add(SignInRequested(email, password));
+    context
+        .read<AuthBloc>()
+        .add(SignInRequested(email: email, password: password));
   }
 
   @override
