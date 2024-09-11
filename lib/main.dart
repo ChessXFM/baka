@@ -6,6 +6,7 @@ import 'package:game/features/auth/data/repositories/auth_repository.dart';
 import 'package:game/features/auth/logic/bloc/auth_bloc.dart';
 import 'package:game/features/auth/presentation/Signin/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:game/features/study%20table/view/study_table.dart';
 import 'features/auth/presentation/Signup/signup.dart';
 import 'firebase_options.dart';
 
@@ -32,10 +33,11 @@ class MyApp extends StatelessWidget {
             AuthBloc(authRepository: authRepository, firestore: firestore),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: SignInScreen(),
+          home: StudyTable(),
           routes: {
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
+            StudyTable.routeName: (context) => StudyTable(),
             HomeScreen.routeName: (context) => const HomeScreen(),
           },
         ),
