@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/Core/constant.dart';
 import 'package:game/Screens/Home/home_screen.dart';
-import 'package:game/features/auth/logic/bloc/auth_bloc.dart';
-import 'package:game/features/auth/logic/bloc/auth_state.dart';
-import 'package:game/features/auth/presentation/Signin/signin.dart';
-import 'package:game/features/auth/presentation/Signin/widgets/mytextformfield.dart';
-import 'package:game/features/auth/presentation/Signin/widgets/password_field.dart';
-import 'package:game/features/auth/presentation/Signup/signup_functions.dart';
+import 'package:game/features/auth/bloc/auth_bloc.dart';
+import 'package:game/features/auth/bloc/auth_state.dart';
+import 'package:game/features/auth/view/Signin/signin.dart';
+import 'package:game/features/auth/view/Signin/widgets/mytextformfield.dart';
+import 'package:game/features/auth/view/Signin/widgets/password_field.dart';
+import 'package:game/features/auth/view/Signup/signup_functions.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const String routeName = "/sign_up";

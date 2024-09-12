@@ -1,131 +1,150 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class StudyTable extends StatelessWidget {
-  static const String routeName = '/StudyTable';
+  static const String routeName = '/Study Table';
+  final List<String> days = [
+    'السبت',
+    'الأحد',
+    'الاثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+    'الجمعة',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SfCalendar(
-        view: CalendarView.week,
-        dataSource: SubjectDataSource(getSubjectData()),
-        timeSlotViewSettings: TimeSlotViewSettings(
-          startHour: 7,
-          endHour: 20,
-          timeIntervalHeight: 60,
+    return SafeArea(
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+        //  backgroundColor: Colors.blueAccent,
+          body: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+      children: [
+        // العناوين
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            buildDayHeader('السبت'),
+            buildDayHeader('الأحد'),
+            buildDayHeader('الاثنين'),
+            buildDayHeader('الثلاثاء'),
+            buildDayHeader('الأربعاء'),
+            buildDayHeader('الخميس'),
+            buildDayHeader('الجمعة'),
+          ],
         ),
-        appointmentBuilder: (BuildContext context, CalendarAppointmentDetails details) {
-          final subject = details.appointments.first;
-          return Container(
-            decoration: BoxDecoration(
-              color: subject.color.withOpacity(0.6),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: subject.color, width: 1),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        SizedBox(height: 10),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 1),
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: [
-                FaIcon(subject.icon, color: Colors.white),
-                SizedBox(width: 8),
-                Text(
-                  subject.subject,
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                buildTableRow(
+                  time: '9:00 - 10:30',
+                  subjects: [
+                    StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue),
+                    StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent),
+                    StudySubject('اللغة الإنجليزية', FontAwesomeIcons.book, Colors.purple),
+                    StudySubject('علم الأحياء', FontAwesomeIcons.dna, Colors.orange),
+                    StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green),
+                    StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal),
+                    StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue),
+                  ],
                 ),
+                buildTableRow(
+                  time: '11:00 - 12:30',
+                  subjects: [
+                    StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent),
+                    StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green),
+                    StudySubject('علم الأحياء', FontAwesomeIcons.dna, Colors.orange),
+                    StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue),
+                    StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal),
+                    StudySubject('اللغة الإنجليزية', FontAwesomeIcons.book, Colors.purple),
+                    StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green),
+                  ],
+                ),
+                buildTableRow(
+                  time: '1:00 - 2:30',
+                  subjects: [
+                    StudySubject('اللغة الإنجليزية', FontAwesomeIcons.book, Colors.purple),
+                    StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal),
+                    StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue),
+                    StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent),
+                    StudySubject('علم الأحياء', FontAwesomeIcons.dna, Colors.orange),
+                    StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green),
+                    StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent),
+                  ],
+                ),
+                // يمكنك إضافة المزيد من الصفوف للفترات الزمنية الأخرى
               ],
             ),
-          );
-        },
+          ),
+        ),
+      ],
+    ),
+          ),
+        ),
+      ),
+    );
+  }
+TableRow buildTableRow({required String time, required List<StudySubject> subjects}) {
+    return TableRow(
+      children: [
+        buildSubjectCell(time, subjects[0]),
+        buildSubjectCell(time, subjects[1]),
+        buildSubjectCell(time, subjects[2]),
+        buildSubjectCell(time, subjects[3]),
+        buildSubjectCell(time, subjects[4]),
+        buildSubjectCell(time, subjects[5]),
+        buildSubjectCell(time, subjects[6]),
+      ],
+    );
+  }
+
+  Widget buildSubjectCell(String time, StudySubject subject) {
+    return Container(
+      height: 100,
+      padding: EdgeInsets.all(5),
+      color: subject.color.withOpacity(0.2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FaIcon(subject.icon, color: subject.color),
+          SizedBox(height: 8),
+          Text(
+            subject.name,
+            style: TextStyle(fontWeight: FontWeight.bold, color: subject.color),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            time,
+            style: TextStyle(color: Colors.grey,fontSize:10),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDayHeader(String day) {
+    return Expanded(
+      child: Text(
+        day,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        textAlign: TextAlign.center,
       ),
     );
   }
 }
 
-List<Subject> getSubjectData() {
-  return <Subject>[
-    Subject(
-      subject: 'Math',
-      startTime: DateTime(2024, 9, 11, 9, 0),
-      endTime: DateTime(2024, 9, 11, 10, 30),
-      color: Colors.blue,
-      icon: FontAwesomeIcons.calculator,
-    ),
-    Subject(
-      subject: 'Physics',
-      startTime: DateTime(2024, 9, 11, 11, 0),
-      endTime: DateTime(2024, 9, 11, 12, 30),
-      color: Colors.redAccent,
-      icon: FontAwesomeIcons.atom,
-    ),
-    Subject(
-      subject: 'Chemistry',
-      startTime: DateTime(2024, 9, 12, 9, 0),
-      endTime: DateTime(2024, 9, 12, 10, 30),
-      color: Colors.green,
-      icon: FontAwesomeIcons.flask,
-    ),
-    Subject(
-      subject: 'Biology',
-      startTime: DateTime(2024, 9, 12, 11, 0),
-      endTime: DateTime(2024, 9, 12, 12, 30),
-      color: Colors.orange,
-      icon: FontAwesomeIcons.dna,
-    ),
-    Subject(
-      subject: 'English',
-      startTime: DateTime(2024, 9, 13, 9, 0),
-      endTime: DateTime(2024, 9, 13, 10, 30),
-      color: Colors.purple,
-      icon: FontAwesomeIcons.book,
-    ),
-    Subject(
-      subject: 'National Education',
-      startTime: DateTime(2024, 9, 13, 11, 0),
-      endTime: DateTime(2024, 9, 13, 12, 30),
-      color: Colors.teal,
-      icon: FontAwesomeIcons.flag,
-    ),
-  ];
-}
-
-class Subject {
-  Subject({
-    required this.subject,
-    required this.startTime,
-    required this.endTime,
-    required this.color,
-    required this.icon,
-  });
-
-  final String subject;
-  final DateTime startTime;
-  final DateTime endTime;
-  final Color color;
+class StudySubject {
+  final String name;
   final IconData icon;
-}
+  final Color color;
 
-class SubjectDataSource extends CalendarDataSource {
-  SubjectDataSource(List<Subject> subjects) {
-    appointments = subjects;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].startTime;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].endTime;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].color;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].subject;
-  }
+  StudySubject(this.name, this.icon, this.color);
 }

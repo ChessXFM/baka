@@ -2,9 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game/features/auth/logic/bloc/auth_event.dart';
-import 'package:game/features/auth/logic/bloc/auth_state.dart';
-import 'package:game/features/auth/data/repositories/auth_repository.dart';
+import 'package:game/features/auth/bloc/auth_event.dart';
+import 'package:game/features/auth/bloc/auth_state.dart';
+import 'package:game/features/auth/model/repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

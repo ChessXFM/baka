@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game/features/auth/logic/bloc/auth_bloc.dart';
-import 'package:game/features/auth/logic/bloc/auth_event.dart';
+import 'package:game/features/auth/bloc/auth_bloc.dart';
+import 'package:game/features/auth/bloc/auth_event.dart';
 
 class SignUpFunctions {
 

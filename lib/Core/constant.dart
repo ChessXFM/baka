@@ -10,3 +10,11 @@ class ScreenSizeHelper {
     return MediaQuery.of(context).size.height;
   }
 }
+const List<String>studySubjects =[
+  'الرياضيات',
+'التربية الوطنية ' ,
+'علم الأحياء',
+'الفيزياء ',
+'الكيمياء',
+' اللغة الإنجليزية',
+];

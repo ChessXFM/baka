@@ -1,7 +1,7 @@
 // password_field.dart
 
 import 'package:flutter/material.dart';
-import 'package:game/features/auth/presentation/Signin/widgets/mytextformfield.dart';
+import 'package:game/features/auth/view/Signin/widgets/mytextformfield.dart';
 
 class PasswordField extends StatefulWidget {
   final TextEditingController controller;
