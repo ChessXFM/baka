@@ -7,7 +7,6 @@ import '../model/study_subject_model.dart';
 
 Widget buildDayCell(String day, BuildContext context) {
   return Container(
-    //height: ScreenSizeHelper.mobileScreenHeight(context)/10,
     width: ScreenSizeHelper.mobileScreenWidth(context) / 9,
     padding: const EdgeInsets.all(5),
     color: ThemeHelper.accentColor,
@@ -27,8 +26,6 @@ TableRow buildTableRow(
     required String time,
     required List<StudySubject> subjects}) {
   return TableRow(
-  //  decoration: BoxDecoration(
-    //    border: Border.all(), borderRadius: BorderRadius.circular(20)),
     children: [
       buildDayCell(day, context),
       buildSubjectCell(subjects[0], context),
@@ -42,9 +39,9 @@ TableRow buildTableRow(
   );
 }
 
-TableRow buildTableTimes(
-    {required BuildContext context,
-  }) {
+TableRow buildTableTimes({
+  required BuildContext context,
+}) {
   return TableRow(
     // decoration: BoxDecoration(
     //     border: Border.all(), borderRadius: BorderRadius.circular(20)),
@@ -74,14 +71,13 @@ Widget buildSubjectCell(StudySubject subject, BuildContext context) {
         Flexible(
           child: Text(
             subject.name,
-            style: TextStyle(fontSize:12, fontWeight: FontWeight.bold, color: subject.color),
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: subject.color),
             textAlign: TextAlign.center,
           ),
         ),
-        // Text(
-        //   time,
-        //   style: const TextStyle(color: Colors.grey, fontSize: 10),
-        // ),
       ],
     ),
   );

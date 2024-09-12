@@ -73,9 +73,11 @@ class SignInScreen extends StatelessWidget {
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/background.jpg'))),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/background.jpg'),
+              ),
+            ),
           ),
           BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
