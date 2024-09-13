@@ -31,14 +31,14 @@ class _StudyTableFState extends State<StudyTableF> {
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          backgroundColor: ThemeHelper.accentColor,
+          backgroundColor: Colors.grey,
           body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/background.jpg'),
-              ),
-            ),
+            // decoration: const BoxDecoration(
+            //   image: DecorationImage(
+            //     fit: BoxFit.cover,
+            //     image: AssetImage('assets/images/background.jpg'),
+            //   ),
+            // ),
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Column(
