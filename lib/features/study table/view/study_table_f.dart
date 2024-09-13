@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:game/Core/theme_helper.dart';
-import 'package:game/features/study%20table/view/study_table_functions.dart';
 import '../model/study_subject_model.dart';
 
 class StudyTableF extends StatefulWidget {
   static const String routeName = '/Study Table f';
 
+  const StudyTableF({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _StudyTableFState createState() => _StudyTableFState();
 }
 
@@ -32,78 +33,69 @@ class _StudyTableFState extends State<StudyTableF> {
         textDirection: TextDirection.rtl,
         child: Scaffold(
           backgroundColor: Colors.grey,
-          body: Container(
-            // decoration: const BoxDecoration(
-            //   image: DecorationImage(
-            //     fit: BoxFit.cover,
-            //     image: AssetImage('assets/images/background.jpg'),
-            //   ),
-            // ),
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 10),
-                  Text('خطة الدراسة الأسبوعية',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 100),
-                  Expanded(
-                    flex: 7,
-                    child: SingleChildScrollView(
-                      child: Table(
-                        border: TableBorder.all(
-                          color: Colors.black87,
-                          width: 1,
-                        ),
-                        defaultVerticalAlignment:
-                            TableCellVerticalAlignment.middle,
-                        children: [
-                          buildTableTimes(context: context),
-                          buildTableRow(
-                            context: context,
-                            day: 'السبت',
-                            time: '9:00 - 10:30',
-                          ),
-                          buildTableRow(
-                            context: context,
-                            day: 'الأحد',
-                            time: '11:00 - 12:30',
-                          ),
-                          buildTableRow(
-                            context: context,
-                            day: 'الاثنين',
-                            time: '1:00 - 2:30',
-                          ),
-                          buildTableRow(
-                            context: context,
-                            day: 'الثلاثاء',
-                            time: '3:00 - 4:30',
-                          ),
-                          buildTableRow(
-                            context: context,
-                            day: 'الأربعاء',
-                            time: '5:00 - 6:30',
-                          ),
-                          buildTableRow(
-                            context: context,
-                            day: 'الخميس',
-                            time: '7:00 - 8:30',
-                          ),
-                          buildTableRow(
-                            context: context,
-                            day: 'الجمعة',
-                            time: '9:00 - 10:30',
-                          ),
-                        ],
-                      ),
+          body: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+             const Text('خطة الدراسة الأسبوعية',
+                  style:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 100),
+              Expanded(
+                flex: 7,
+                child: SingleChildScrollView(
+                  child: Table(
+                    border: TableBorder.all(
+                      color: Colors.black87,
+                      width: 1,
                     ),
+                    defaultVerticalAlignment:
+                        TableCellVerticalAlignment.middle,
+                    children: [
+                      buildTableTimes(context: context),
+                      buildTableRow(
+                        context: context,
+                        day: 'السبت',
+                        time: '9:00 - 10:30',
+                      ),
+                      buildTableRow(
+                        context: context,
+                        day: 'الأحد',
+                        time: '11:00 - 12:30',
+                      ),
+                      buildTableRow(
+                        context: context,
+                        day: 'الاثنين',
+                        time: '1:00 - 2:30',
+                      ),
+                      buildTableRow(
+                        context: context,
+                        day: 'الثلاثاء',
+                        time: '3:00 - 4:30',
+                      ),
+                      buildTableRow(
+                        context: context,
+                        day: 'الأربعاء',
+                        time: '5:00 - 6:30',
+                      ),
+                      buildTableRow(
+                        context: context,
+                        day: 'الخميس',
+                        time: '7:00 - 8:30',
+                      ),
+                      buildTableRow(
+                        context: context,
+                        day: 'الجمعة',
+                        time: '9:00 - 10:30',
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            ],
+          ),),
         ),
       ),
     );
@@ -144,7 +136,7 @@ class _StudyTableFState extends State<StudyTableF> {
           children: [
             selectedSubject != null
                 ? FaIcon(selectedSubject.icon, color: selectedSubject.color)
-                : Icon(Icons.add, color: Colors.black),
+                :const Icon(Icons.add, color: Colors.black),
             const SizedBox(height: 4),
             Flexible(
               child: Text(
@@ -167,8 +159,8 @@ class _StudyTableFState extends State<StudyTableF> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('اختر مادة'),
-          content: Container(
+          title: const Text('اختر مادة'),
+          content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
               shrinkWrap: true,
@@ -200,7 +192,7 @@ class _StudyTableFState extends State<StudyTableF> {
       alignment: Alignment.center,
       child: Text(
         day,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
           color: Colors.white,
@@ -231,7 +223,7 @@ class _StudyTableFState extends State<StudyTableF> {
       alignment: Alignment.center,
       child: Text(
         time,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
         ),

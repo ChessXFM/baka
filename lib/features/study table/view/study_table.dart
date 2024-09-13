@@ -13,6 +13,8 @@ class StudyTable extends StatelessWidget {
     'الجمعة',
   ];
 
+   StudyTable({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -37,7 +39,7 @@ class StudyTable extends StatelessWidget {
             buildDayHeader('الجمعة'),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Expanded(
           child: SingleChildScrollView(
             child: Table(
@@ -109,13 +111,13 @@ TableRow buildTableRow({required String time, required List<StudySubject> subjec
   Widget buildSubjectCell(String time, StudySubject subject) {
     return Container(
       height: 100,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       color: subject.color.withOpacity(0.2),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FaIcon(subject.icon, color: subject.color),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             subject.name,
             style: TextStyle(fontWeight: FontWeight.bold, color: subject.color),
@@ -123,7 +125,7 @@ TableRow buildTableRow({required String time, required List<StudySubject> subjec
           ),
           Text(
             time,
-            style: TextStyle(color: Colors.grey,fontSize:10),
+            style: const TextStyle(color: Colors.grey,fontSize:10),
           ),
         ],
       ),
@@ -134,7 +136,7 @@ TableRow buildTableRow({required String time, required List<StudySubject> subjec
     return Expanded(
       child: Text(
         day,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         textAlign: TextAlign.center,
       ),
     );

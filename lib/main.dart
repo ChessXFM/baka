@@ -33,13 +33,13 @@ class MyApp extends StatelessWidget {
         create: (context) =>
             AuthBloc(authRepository: authRepository, firestore: firestore),
         child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: StudyTableF(),
+          debugShowCheckedModeBanner:          false,
+          home: const StudyTableF(),
           routes: {
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
-            StudyTable.routeName: (context) => StudyTable(),
-			  StudyTableF.routeName: (context) => StudyTableF(),
+            StudyTable.routeName: (context) =>  StudyTable(),
+			  StudyTableF.routeName: (context) => const StudyTableF(),
             HomeScreen.routeName: (context) => const HomeScreen(),
           },
         ),
