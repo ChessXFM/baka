@@ -18,3 +18,7 @@ const List<String>studySubjects =[
 'الكيمياء',
 ' اللغة الإنجليزية',
 ];
+class AppConstants {
+  static const String quizTitle = "Quiz";
+  static const String submitButtonLabel = "Submit";
+}
