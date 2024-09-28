@@ -43,6 +43,8 @@ dependencies:
   syncfusion_flutter_calendar: ^20.3.0
   font_awesome_flutter: ^10.7.0
   shared_preferences: ^2.2.2
+  audioplayers: ^4.0.0
+  lottie: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -69,8 +71,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/sounds/
+    - assets/sounds/correct.mp3
+    - assets/sounds/timer_end.mp3
+    - assets/sounds/timer.mp3
+    - assets/sounds/wrong_answer.mp3
     - assets/images/background.jpg
-
+    - assets/lottie/infinity.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
