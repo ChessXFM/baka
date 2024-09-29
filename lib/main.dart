@@ -8,10 +8,10 @@ import 'package:game/features/auth/bloc/auth_bloc.dart';
 import 'package:game/features/auth/view/Signin/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:game/features/quiz/bloc/quiz_bloc.dart';
-import 'package:game/features/study%20table/view/study_table.dart';
-import 'package:game/features/study%20table/view/study_table_f.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
+import 'package:game/features/study%20table/view/lottie_test.dart';
 import 'features/auth/view/Signup/signup.dart';
+import 'features/study table/view/study_final.dart';
 import 'firebase_options.dart';
 
 // ...
@@ -44,19 +44,22 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const HomeScreen(),
+          
+          home: const StudyTableFinal(),
           theme: ThemeData(
             brightness: Brightness.dark,
-            fontFamily: 'Reem',
+            fontFamily: 'Amiri',
             primaryColor: ThemeHelper.otherprimaryColor,
             primaryColorDark: ThemeHelper.otherprimaryColor,
           ),
           routes: {
             QuizScreen.routeName: (context) => const QuizScreen(),
+            TestLottie.routeName: (context) => const TestLottie(),
+
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
-            StudyTable.routeName: (context) => StudyTable(),
-            StudyTableF.routeName: (context) => const StudyTableF(),
+            StudyTableFinal.routeName: (context) => const StudyTableFinal(),
+
             HomeScreen.routeName: (context) => const HomeScreen(),
           },
         ),
