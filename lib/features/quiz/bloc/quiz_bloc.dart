@@ -47,7 +47,7 @@ void _startTimer() {
         timeLeft--;
         add(TimerTick(timeLeft)); // Dispatch TimerTick event with the remaining time
       } else {
-        _audioPlayer.play(AssetSource('sounds/timer_end.mp3')); // Play timer end sound
+        _audioPlayer.play(AssetSource('sounds/timer_end.mp3'),); // Play timer end sound
         add(SelectAnswer('')); // Automatically submit when time is up
       }
     });

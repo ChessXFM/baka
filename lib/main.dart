@@ -44,8 +44,9 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: const HomeScreen(),
+          theme: ThemeData.dark(),
           routes: {
-            QuizScreen.routeName: (context) => QuizScreen(),
+            QuizScreen.routeName: (context) =>const QuizScreen(),
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
             StudyTable.routeName: (context) => StudyTable(),

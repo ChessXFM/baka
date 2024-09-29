@@ -32,7 +32,7 @@ class QuestionCard extends StatelessWidget {
               style:const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                // color: Colors.black87,
               ),
             ),
             const SizedBox(height: 20),
