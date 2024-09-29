@@ -8,37 +8,51 @@ class TestLottie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Lottie.asset('assets/lottie/black fire.json',
-                  height: 50, width: 50),
-              const    SizedBox(height: 20,),
-                     Lottie.asset('assets/lottie/red fire.json',
-                  height: 50, width: 50),
-            ],
-          ),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             Row(
-            children: [
-              Lottie.asset('assets/lottie/study2.json',
-                  height: 50, width: 50),
-               const   SizedBox(height: 20,),
-                     Lottie.asset('assets/lottie/study.json',
-                  height: 50, width: 50),
-            ],
-          ),
+              children: [
+                Lottie.asset('assets/lottie/black fire.json',
+                    height: 100, width: 100),
+                const SizedBox(
+                  height: 20,
+                ),
+                Lottie.asset('assets/lottie/red fire.json',
+                    height: 100, width: 100),
+              ],
+            ),
             Row(
-            children: [
-              Lottie.asset('assets/lottie/lottieflow-background-07-000000-easey.json',
-                  height: 50, width: 50),
-               const   SizedBox(height: 20,),
-                     Lottie.asset('assets/lottie/lottieflow-cta-01-2-000000-easey.json',
-                  height: 50, width: 50),
-            ],
-          ),
-        
-        ],
+              children: [
+                Lottie.asset('assets/lottie/study2.json',
+                    height: 100, width: 100),
+                const SizedBox(
+                  height: 20,
+                ),
+                Lottie.asset('assets/lottie/study.json',
+                    height: 100, width: 100),
+              ],
+            ),
+            Row(
+              children: [
+                Lottie.asset(
+                    'assets/lottie/lottieflow-background-07-000000-easey.json',
+                    height: 100,
+                    width: 100),
+                const SizedBox(
+                  height: 20,
+                ),
+                Lottie.asset(
+                    'assets/lottie/lottieflow-cta-01-2-000000-easey.json',
+                    height: 100,
+                    width: 100),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
