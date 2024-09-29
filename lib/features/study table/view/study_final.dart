@@ -29,11 +29,23 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
 
   // قائمة الأيام والأوقات
   final List<String> days = [
-    'السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'
+    'السبت',
+    'الأحد',
+    'الاثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+    'الجمعة'
   ];
 
   final List<String> times = [
-    '9:00', '11:00', '1:00', '3:00', '5:00', '7:00', '9:00'
+    '9:00',
+    '11:00',
+    '1:00',
+    '3:00',
+    '5:00',
+    '7:00',
+    '9:00'
   ];
 
   // قائمة المواد المختارة حسب الخانات
@@ -42,21 +54,34 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
   @override
   void initState() {
     super.initState();
-    _loadSelectedSubjects();  // Load saved subjects from SharedPreferences on app startup
+    _loadSelectedSubjects(); // Load saved subjects from SharedPreferences on app startup
   }
 
   // Load subjects from SharedPreferences
   Future<void> _loadSelectedSubjects() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedSubjectsData = prefs.getString('selectedSubjects');
+
     if (selectedSubjectsData != null) {
       Map<String, dynamic> savedData = jsonDecode(selectedSubjectsData);
+
+      // Check for null entries before mapping
       setState(() {
         selectedSubjects = savedData.map((key, value) {
-          return MapEntry(key, availableSubjects.firstWhere(
-            (subject) => subject.name == value['name'],
-            // orElse: () => null,
-          ));
+          if (value != null && value['name'] != null) {
+            // Find the matching subject by name from availableSubjects list
+            try {
+              return MapEntry(
+                  key,
+                  availableSubjects.firstWhere(
+                    (subject) => subject.name == value['name'],
+                  ));
+            } catch (e) {
+              // In case the subject is not found in the available list (prevent crash)
+              return MapEntry(key, null);
+            }
+          }
+          return MapEntry(key, null); // If data is invalid, set to null
         });
       });
     }
@@ -67,7 +92,8 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> dataToSave = selectedSubjects.map((key, subject) {
       if (subject != null) {
-        return MapEntry(key, {'name': subject.name, 'color': subject.color.toString()});
+        return MapEntry(
+            key, {'name': subject.name, 'color': subject.color.toString()});
       }
       return MapEntry(key, null);
     });
@@ -95,12 +121,19 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
                     child: buildStudyTable(),
                   ),
                 ),
-                const SizedBox(height: 20,),
-                ElevatedButton(onPressed: (){}, child: const Text("حفظ")),
-                  const SizedBox(height: 20,),
-                ElevatedButton(onPressed: (){
-                  Navigator.pushNamed(context, TestLottie.routeName);
-                }, child: const Text("حفظ")),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    onPressed: _saveSelectedSubjects, child: const Text("حفظ")),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, TestLottie.routeName);
+                    },
+                    child: const Text("حفظ")),
               ],
             ),
           ),
@@ -172,7 +205,14 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     StudySubject? selectedSubject = selectedSubjects[key];
 
     return GestureDetector(
-      onTap: () => _showSubjectDialog(key, day, index),
+      onTap: () => _showSubjectDialog(
+          key, day, index), // Tap to add or change the subject
+      onLongPress: () {
+        if (selectedSubject != null) {
+          _showRemoveConfirmationDialog(
+              key); // Show confirmation dialog on long press
+        }
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(TableHelper.borderRadiusValue),
@@ -235,7 +275,8 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
                       : null,
                   onTap: () {
                     setState(() {
-                      selectedSubjects[key] = subject;
+                      selectedSubjects[key] =
+                          subject; // Set the selected subject
                     });
                     _saveSelectedSubjects(); // Save the selection to SharedPreferences
                     Navigator.of(context).pop();
@@ -244,6 +285,37 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
               },
             ),
           ),
+        );
+      },
+    );
+  }
+
+  // Show confirmation dialog before removing subject
+  void _showRemoveConfirmationDialog(String key) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('هل أنت متأكد من إزالة المادة؟'),
+          actions: [
+            TextButton(
+              child: const Text('لا'),
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(); // Close the dialog without any action
+              },
+            ),
+            TextButton(
+              child: const Text('نعم'),
+              onPressed: () {
+                setState(() {
+                  selectedSubjects[key] = null; // Remove the subject
+                });
+                _saveSelectedSubjects(); // Sync removal with SharedPreferences
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
         );
       },
     );
