@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game/Core/theme_helper.dart';
 import 'package:game/Screens/Home/home_screen.dart';
 import 'package:game/features/auth/model/repositories/auth_repository.dart';
 import 'package:game/features/auth/bloc/auth_bloc.dart';
@@ -44,9 +45,14 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: const HomeScreen(),
-          theme: ThemeData.dark(),
+          theme: ThemeData(
+            brightness: Brightness.dark,
+            fontFamily: 'Reem',
+            primaryColor: ThemeHelper.otherprimaryColor,
+            primaryColorDark: ThemeHelper.otherprimaryColor,
+          ),
           routes: {
-            QuizScreen.routeName: (context) =>const QuizScreen(),
+            QuizScreen.routeName: (context) => const QuizScreen(),
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
             StudyTable.routeName: (context) => StudyTable(),

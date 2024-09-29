@@ -19,7 +19,8 @@ class QuizScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true,
+        appBar: AppBar(
+            centerTitle: true,
             title: const Text(
               AppConstants.quizTitle,
             ),
@@ -46,13 +47,6 @@ class QuizScreen extends StatelessWidget {
                   return Column(
                     children: [
                       _buildTimer(state.timeLeft), // Modern Timer Layout
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
-
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
                       QuestionCard(
                         question: state
                             .questions[state.currentQuestionIndex].question,
@@ -72,8 +66,14 @@ class QuizScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Quiz Completed! Your Score: ${state.score}"),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text("انتهى الاختبار ! نتيجتك هي: ${state.score}"),
                         ElevatedButton(
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  ThemeHelper.otherprimaryColor)),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -106,7 +106,7 @@ class QuizScreen extends StatelessWidget {
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         // color: ThemeHelper.accentColor,
-          color: Colors.transparent,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(20),
       ),
       padding: const EdgeInsets.all(16),
