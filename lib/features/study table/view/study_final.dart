@@ -7,6 +7,8 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import '../models/study_subject_model.dart';
+
 class StudyTableFinal extends StatefulWidget {
   static const String routeName = '/Study Table final';
   const StudyTableFinal({super.key});
@@ -398,10 +400,4 @@ class _StudyTableFinalState extends State<StudyTableFinal>
   }
 }
 
-class StudySubject {
-  final String name;
-  final IconData icon;
-  final Color color;
 
-  StudySubject(this.name, this.icon, this.color);
-}
