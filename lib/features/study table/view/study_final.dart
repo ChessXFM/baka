@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:game/Core/table_helper.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:game/Core/theme_helper.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/study_subject_model.dart';
 import 'dart:convert';
-
-import 'lottie_test.dart';
 
 class StudyTableFinal extends StatefulWidget {
   static const String routeName = '/Study Table final';
@@ -16,8 +15,11 @@ class StudyTableFinal extends StatefulWidget {
   _StudyTableFinalState createState() => _StudyTableFinalState();
 }
 
-class _StudyTableFinalState extends State<StudyTableFinal> {
-  // قائمة المواد المتاحة
+class _StudyTableFinalState extends State<StudyTableFinal>
+    with WidgetsBindingObserver {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   final List<StudySubject> availableSubjects = [
     StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue),
     StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent),
@@ -27,67 +29,69 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal),
   ];
 
-  // قائمة الأيام والأوقات
   final List<String> days = [
-    'السبت',
-    'الأحد',
     'الاثنين',
     'الثلاثاء',
     'الأربعاء',
     'الخميس',
-    'الجمعة'
+    'الجمعة',
+    'السبت',
+    'الأحد'
   ];
 
   final List<String> times = [
     '9:00',
     '11:00',
-    '1:00',
-    '3:00',
-    '5:00',
-    '7:00',
-    '9:00'
+    '13:00',
+    '15:00',
+    '17:00',
+    '19:00',
+    '21:00'
   ];
 
-  // قائمة المواد المختارة حسب الخانات
   Map<String, StudySubject?> selectedSubjects = {};
 
   @override
   void initState() {
     super.initState();
-    _loadSelectedSubjects(); // Load saved subjects from SharedPreferences on app startup
+    _loadSelectedSubjects();
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Asia/Damascus'));
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
-  // Load subjects from SharedPreferences
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _loadSelectedSubjects();
+    }
+  }
+
   Future<void> _loadSelectedSubjects() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedSubjectsData = prefs.getString('selectedSubjects');
-
     if (selectedSubjectsData != null) {
       Map<String, dynamic> savedData = jsonDecode(selectedSubjectsData);
-
-      // Check for null entries before mapping
       setState(() {
         selectedSubjects = savedData.map((key, value) {
-          if (value != null && value['name'] != null) {
-            // Find the matching subject by name from availableSubjects list
-            try {
-              return MapEntry(
-                  key,
-                  availableSubjects.firstWhere(
-                    (subject) => subject.name == value['name'],
-                  ));
-            } catch (e) {
-              // In case the subject is not found in the available list (prevent crash)
-              return MapEntry(key, null);
-            }
-          }
-          return MapEntry(key, null); // If data is invalid, set to null
+          return MapEntry(
+            key,
+            availableSubjects.firstWhere(
+              (subject) => subject.name == value['name'],
+            ),
+          );
         });
       });
     }
   }
 
-  // Save subjects to SharedPreferences
   Future<void> _saveSelectedSubjects() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> dataToSave = selectedSubjects.map((key, subject) {
@@ -100,6 +104,54 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     prefs.setString('selectedSubjects', jsonEncode(dataToSave));
   }
 
+  Future<void> _scheduleNotification(
+      String key, String day, String time, StudySubject subject) async {
+    final dayIndex = days.indexOf(day) + 1;
+
+    final timeParts = time.split(':');
+    final hour = int.parse(timeParts[0]);
+    final minute = int.parse(timeParts[1]);
+
+    tz.TZDateTime scheduledDate =
+        _nextInstanceOfDayAndTime(dayIndex, hour, minute);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      key.hashCode,
+      'تذكير بالمادة الدراسية',
+      'حان وقت ${subject.name}',
+      scheduledDate,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          'study_schedule_channel',
+          'Study Schedule',
+          channelDescription: 'Notifications for study schedule',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> _cancelNotification(String key) async {
+    await flutterLocalNotificationsPlugin.cancel(key.hashCode);
+  }
+
+  tz.TZDateTime _nextInstanceOfDayAndTime(int dayOfWeek, int hour, int minute) {
+    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+
+    while (scheduledDate.weekday != dayOfWeek || scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    return scheduledDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,7 +162,7 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
             centerTitle: true,
             title: const Text('خطة الدراسة الأسبوعية'),
           ),
-          backgroundColor: ThemeHelper.whiteColor,
+          backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(
@@ -121,19 +173,16 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
                     child: buildStudyTable(),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _showClearAllDialog,
+                      child: const Text("حذف جميع المواد"),
+                    ),
+                  ],
                 ),
-                ElevatedButton(
-                    onPressed: _saveSelectedSubjects, child: const Text("حفظ")),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, TestLottie.routeName);
-                    },
-                    child: const Text("حفظ")),
               ],
             ),
           ),
@@ -142,7 +191,6 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Build the complete study table
   Widget buildStudyTable() {
     return Container(
       decoration: const BoxDecoration(
@@ -158,17 +206,15 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Build header row for times
   TableRow buildTableHeader() {
     return TableRow(
       children: [
-        buildTimeCell(''), // Empty cell for day column
+        buildTimeCell(''),
         ...times.map((time) => buildTimeCell(time)).toList(),
       ],
     );
   }
 
-  // Build row for each day
   TableRow buildTableRow(String day) {
     return TableRow(
       children: [
@@ -178,13 +224,12 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Build individual time cells
   Widget buildTimeCell(String time) {
     return Container(
-      margin: const EdgeInsets.all(TableHelper.marginValue),
+      margin: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(2),
-        color: Colors.blueAccent,
+        color: ThemeHelper.otherprimaryColor,
       ),
       height: 50,
       alignment: Alignment.center,
@@ -199,26 +244,23 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Build individual subject cells
   Widget buildSubjectCell(String day, int index) {
     String key = '$day-$index';
     StudySubject? selectedSubject = selectedSubjects[key];
 
     return GestureDetector(
-      onTap: () => _showSubjectDialog(
-          key, day, index), // Tap to add or change the subject
+      onTap: () => _showSubjectDialog(key, day, times[index]),
       onLongPress: () {
         if (selectedSubject != null) {
-          _showRemoveConfirmationDialog(
-              key); // Show confirmation dialog on long press
+          _showRemoveDialog(key, selectedSubject);
         }
       },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(TableHelper.borderRadiusValue),
+          borderRadius: BorderRadius.circular(8),
           color: selectedSubject?.color.withOpacity(0.2) ?? Colors.white,
         ),
-        margin: const EdgeInsets.all(TableHelper.marginValue),
+        margin: const EdgeInsets.all(4.0),
         height: 50,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -233,12 +275,11 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Build day header cells
   Widget buildDayCell(String day) {
     return Container(
-      margin: const EdgeInsets.all(TableHelper.marginValue),
+      margin: const EdgeInsets.all(4.0),
       height: 50,
-      color: Colors.blueAccent,
+      color: ThemeHelper.otherprimaryColor,
       alignment: Alignment.center,
       child: Text(
         day,
@@ -251,8 +292,7 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Show the subject selection dialog
-  void _showSubjectDialog(String key, String day, int index) {
+  void _showSubjectDialog(String key, String day, String time) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -270,15 +310,13 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
                 return ListTile(
                   leading: FaIcon(subject.icon, color: subject.color),
                   title: Text(subject.name),
-                  trailing: isSelected
-                      ? Icon(Icons.check, color: Theme.of(context).primaryColor)
-                      : null,
-                  onTap: () {
+                  tileColor: isSelected ? Colors.grey[300] : null,
+                  onTap: () async {
                     setState(() {
-                      selectedSubjects[key] =
-                          subject; // Set the selected subject
+                      selectedSubjects[key] = subject;
                     });
-                    _saveSelectedSubjects(); // Save the selection to SharedPreferences
+                    await _scheduleNotification(key, day, time, subject);
+                    await _saveSelectedSubjects();
                     Navigator.of(context).pop();
                   },
                 );
@@ -290,34 +328,80 @@ class _StudyTableFinalState extends State<StudyTableFinal> {
     );
   }
 
-  // Show confirmation dialog before removing subject
-  void _showRemoveConfirmationDialog(String key) {
+  void _showRemoveDialog(String key, StudySubject subject) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('هل أنت متأكد من إزالة المادة؟'),
-          actions: [
-            TextButton(
-              child: const Text('لا'),
-              onPressed: () {
-                Navigator.of(context)
-                    .pop(); // Close the dialog without any action
-              },
-            ),
-            TextButton(
-              child: const Text('نعم'),
-              onPressed: () {
-                setState(() {
-                  selectedSubjects[key] = null; // Remove the subject
-                });
-                _saveSelectedSubjects(); // Sync removal with SharedPreferences
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-          ],
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: AlertDialog(
+            title: const Text('تأكيد الحذف'),
+            content: Text('هل أنت متأكد أنك تريد إزالة ${subject.name}؟'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('نعم'),
+                onPressed: () async {
+                  setState(() {
+                    selectedSubjects[key] = null;
+                  });
+                  await _cancelNotification(key);
+                  await _saveSelectedSubjects();
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('لا'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         );
       },
     );
   }
+
+  void _showClearAllDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: AlertDialog(
+            title: const Text('تأكيد حذف جميع المواد'),
+            content: const Text('هل أنت متأكد أنك تريد حذف جميع المواد؟'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('نعم'),
+                onPressed: () async {
+                  setState(() {
+                    selectedSubjects.clear(); // حذف جميع المواد
+                  });
+                  await flutterLocalNotificationsPlugin
+                      .cancelAll(); // إلغاء جميع الإشعارات
+                  await _saveSelectedSubjects(); // حفظ التغييرات
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('لا'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class StudySubject {
+  final String name;
+  final IconData icon;
+  final Color color;
+
+  StudySubject(this.name, this.icon, this.color);
 }

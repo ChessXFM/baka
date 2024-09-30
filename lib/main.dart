@@ -13,11 +13,26 @@ import 'package:game/features/study%20table/view/lottie_test.dart';
 import 'features/auth/view/Signup/signup.dart';
 import 'features/study table/view/study_final.dart';
 import 'firebase_options.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 // ...
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize the timezone package
+  tz.initializeTimeZones();
+  // Set the appropriate timezone
+  // Initialization settings for Android and iOS
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -44,7 +59,6 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          
           home: const StudyTableFinal(),
           theme: ThemeData(
             brightness: Brightness.dark,
@@ -55,11 +69,9 @@ class MyApp extends StatelessWidget {
           routes: {
             QuizScreen.routeName: (context) => const QuizScreen(),
             TestLottie.routeName: (context) => const TestLottie(),
-
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
             StudyTableFinal.routeName: (context) => const StudyTableFinal(),
-
             HomeScreen.routeName: (context) => const HomeScreen(),
           },
         ),
