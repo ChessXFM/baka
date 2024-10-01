@@ -6,6 +6,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:game/Screens/Home/home_screen.dart';
 
 import '../models/study_subject_model.dart';
 
@@ -39,6 +40,15 @@ class _StudyTableFinalState extends State<StudyTableFinal>
     'الجمعة',
     'السبت',
     'الأحد'
+  ];
+  final List<String> daysDisplayOrder = [
+    'السبت',
+    'الأحد',
+    'الاثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+    'الجمعة'
   ];
 
   final List<String> times = [
@@ -180,6 +190,9 @@ class _StudyTableFinalState extends State<StudyTableFinal>
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
+                      style: const ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(
+                              ThemeHelper.otherprimaryColor)),
                       onPressed: _showClearAllDialog,
                       child: const Text("حذف جميع المواد"),
                     ),
@@ -202,7 +215,7 @@ class _StudyTableFinalState extends State<StudyTableFinal>
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           buildTableHeader(),
-          ...days.map((day) => buildTableRow(day)).toList(),
+          ...daysDisplayOrder.map((day) => buildTableRow(day)).toList(),
         ],
       ),
     );
@@ -399,5 +412,3 @@ class _StudyTableFinalState extends State<StudyTableFinal>
     );
   }
 }
-
-

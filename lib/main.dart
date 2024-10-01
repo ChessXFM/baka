@@ -15,7 +15,7 @@ import 'features/study table/view/study_final.dart';
 import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
 // ...
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const StudyTableFinal(),
+          home: const HomeScreen(),
           theme: ThemeData(
             brightness: Brightness.dark,
             fontFamily: 'Amiri',
