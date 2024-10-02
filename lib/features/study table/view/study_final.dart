@@ -6,7 +6,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:game/Screens/Home/home_screen.dart';
 
 import '../models/study_subject_model.dart';
 
