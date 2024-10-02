@@ -13,7 +13,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   final AudioPlayer _audioPlayer = AudioPlayer(); // Audio player instance
   final LocalStorageService localStorageService = LocalStorageService();
   final FirebaseService firebaseService = FirebaseService();
-  final List<Quiz> static_questions = [
+  final List<Quiz> staticQuestions = [
     Quiz(
       id: 1.toString(),
       question: "What is the capital of Syria?",
@@ -45,6 +45,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<LoadQuiz>(_onLoadQuiz);
     on<TimerTick>(_onTimerTick);
     on<SelectAnswer>(_onSubmitAnswer);
+    on<SyncQuestions>(_onSyncQuestions);
+
   }
 
   void _startTimer() {
@@ -65,23 +67,13 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     });
   }
 
-/* @override
-Stream<QuizState> mapEventToState(QuizEvent event) async* {
-  if (event is LoadQuiz) {
-    // Use event.subject to load the quiz based on the subject
-    // For example:
-    final questions = await fetchQuestions(event.subject);
-    yield QuizLoaded(questions: questions);
-  }
-  // ... rest of the code remains unchanged
-} */
   void _onLoadQuiz(LoadQuiz event, Emitter<QuizState> emit) async {
     final sharedQuestions =
         await localStorageService.loadQuestions(event.subject);
-    if (sharedQuestions.isEmpty || sharedQuestions == null) {
+    if (sharedQuestions.isEmpty) {
       _startTimer(); // Start timer when quiz is loaded
       emit(QuizLoaded(
-        questions: static_questions,
+        questions: staticQuestions,
         currentQuestionIndex: 0,
         selectedAnswer: '',
         score: 0,
@@ -185,7 +177,7 @@ Stream<QuizState> mapEventToState(QuizEvent event) async* {
         selectedAnswer: '',
         score: 0,
         timeLeft: 30, // or however you manage the timer
-        userAnswers: [],
+        userAnswers: const [],
       ));
     } catch (error) {
       // Handle any errors during fetching or saving
