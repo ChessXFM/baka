@@ -10,12 +10,12 @@ import '../bloc/quiz_bloc.dart';
 import '../bloc/quiz_events.dart';
 
 class QuizScreen extends StatelessWidget {
-  static const String routeName = '/Tests Screen';
-  const QuizScreen({super.key});
-
+  static const String routeName = '/Quizes Screen';
+  const QuizScreen({super.key, required this.subject});
+  final String subject ;
   @override
   Widget build(BuildContext context) {
-    context.read<QuizBloc>().add(LoadQuiz());
+    context.read<QuizBloc>().add(LoadQuiz(subject));
 
     return SafeArea(
       child: Scaffold(

@@ -10,6 +10,8 @@ abstract class QuizState extends Equatable {
 
 class QuizInitial extends QuizState {}
 
+class QuizLoading extends QuizState {}
+
 class QuizLoaded extends QuizState {
   final List<Quiz> questions;
   final int currentQuestionIndex;
@@ -51,4 +53,11 @@ class QuizCompleted extends QuizState {
 
   @override
   List<Object> get props => [score, questions, userAnswers];
+}
+
+class QuizError extends QuizState {
+  final String error;
+  const QuizError({
+    required this.error,
+  });
 }

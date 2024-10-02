@@ -24,12 +24,12 @@ class _StudyTableFinalState extends State<StudyTableFinal>
       FlutterLocalNotificationsPlugin();
 
   final List<StudySubject> availableSubjects = [
-    StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue),
-    StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent),
-    StudySubject('اللغة الإنجليزية', FontAwesomeIcons.book, Colors.purple),
-    StudySubject('علم الأحياء', FontAwesomeIcons.dna, Colors.orange),
-    StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green),
-    StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal),
+    StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue,true),
+    StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent,true),
+    StudySubject('اللغة الإنجليزية', FontAwesomeIcons.book, Colors.purple,true),
+    StudySubject('علم الأحياء', FontAwesomeIcons.dna, Colors.orange,true),
+    StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green,true),
+    StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal,true),
   ];
 
   final List<String> days = [

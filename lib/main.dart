@@ -9,6 +9,7 @@ import 'package:game/features/auth/view/Signin/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
+import 'package:game/features/quiz/view/subjetcs_screen.dart';
 import 'package:game/features/study%20table/view/lottie_test.dart';
 import 'features/auth/view/Signup/signup.dart';
 import 'features/study table/view/study_final.dart';
@@ -67,6 +68,8 @@ class MyApp extends StatelessWidget {
             primaryColorDark: ThemeHelper.otherprimaryColor,
           ),
           routes: {
+            SubjectSelectionScreen.routeName: (context) =>
+                SubjectSelectionScreen(),
             QuizScreen.routeName: (context) => const QuizScreen(),
             TestLottie.routeName: (context) => const TestLottie(),
             SignInScreen.routeName: (context) => SignInScreen(),

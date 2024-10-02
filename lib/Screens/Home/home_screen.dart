@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game/Core/theme_helper.dart';
+import 'package:game/features/quiz/view/subjetcs_screen.dart';
 
 import '../../features/auth/view/Signin/signin.dart';
 import '../../features/auth/view/Signup/signup.dart';
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home Screen"),
+        title: const Text("الصفحة الرئيسية"),
         centerTitle: true,
       ),
       body: Center(
@@ -25,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             // رسالة ترحيبية
             const Text(
-              'Welcome to the App!',
+              'مرحبا بك !',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
@@ -39,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                 // أيقونة Quiz Screen
                 IconButton(
                   onPressed: () =>
-                      Navigator.pushNamed(context, QuizScreen.routeName),
+                      Navigator.pushNamed(context, SubjectSelectionScreen.routeName),
                   icon: const Icon(Icons.psychology_alt),
                   color: ThemeHelper.primaryColor,
                   iconSize: 60,
