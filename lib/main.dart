@@ -70,7 +70,9 @@ class MyApp extends StatelessWidget {
           routes: {
             SubjectSelectionScreen.routeName: (context) =>
                 SubjectSelectionScreen(),
-            QuizScreen.routeName: (context) => const QuizScreen(),
+            QuizScreen.routeName: (context) => QuizScreen(
+                  subject: ModalRoute.of(context)!.settings.arguments as String,
+                ),
             TestLottie.routeName: (context) => const TestLottie(),
             SignInScreen.routeName: (context) => SignInScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
