@@ -9,6 +9,10 @@ class AdminScreen extends StatelessWidget {
   static const String routeName = '/Admin Panel';
   final TextEditingController questionController = TextEditingController();
   final TextEditingController answerController = TextEditingController();
+  final TextEditingController optionOneController = TextEditingController();
+  final TextEditingController optionTwoController = TextEditingController();
+  final TextEditingController optionThreeController = TextEditingController();
+  final TextEditingController optionFourController = TextEditingController();
 
   AdminScreen({super.key});
 
@@ -38,11 +42,32 @@ class AdminScreen extends StatelessWidget {
                 controller: answerController,
                 decoration: const InputDecoration(labelText: 'Answer'),
               ),
+              TextField(
+                controller: optionOneController,
+                decoration: const InputDecoration(labelText: 'option 1'),
+              ),
+              TextField(
+                controller: optionTwoController,
+                decoration: const InputDecoration(labelText: 'option 2'),
+              ),
+              TextField(
+                controller: optionThreeController,
+                decoration: const InputDecoration(labelText: 'option 3'),
+              ),
+              TextField(
+                controller: optionFourController,
+                decoration: const InputDecoration(labelText: 'option 4'),
+              ),
               ElevatedButton(
                 onPressed: () {
                   final questionData = {
                     'question': questionController.text,
-                    'answers': [answerController.text],
+                    'answers': [
+                      optionFourController.text,
+                      optionThreeController.text,
+                      optionTwoController.text,
+                      optionOneController.text
+                    ],
                     'correctAnswer': answerController.text,
                   };
                   BlocProvider.of<AdminBloc>(context).add(

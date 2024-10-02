@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:game/features/quiz/model/quiz_model.dart';
 
 class LocalStorageService {
-  Future<void> saveQuestions(String subject ,List<Quiz> questions) async {
+  Future<void> saveQuestions(String subject, List<Quiz> questions) async {
     final prefs = await SharedPreferences.getInstance();
     // Convert the questions to a JSON format for storage
     final questionsJson = questions
         .map((q) => {
+              'id': q.id,
               'question': q.question,
               'options': q.options,
               'correctAnswer': q.correctAnswer,
@@ -32,6 +33,7 @@ class LocalStorageService {
               ))
           .toList();
     }
+    print('no questions found in shared');
     return []; // Return an empty list if no questions found
   }
 }

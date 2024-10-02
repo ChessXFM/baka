@@ -11,6 +11,7 @@ import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
 import 'package:game/features/quiz/view/subjetcs_screen.dart';
 import 'package:game/features/study%20table/view/lottie_test.dart';
+import 'features/admin/bloc/admin_bloc.dart';
 import 'features/admin/view/admin_screen.dart';
 import 'features/auth/view/Signup/signup.dart';
 import 'features/study table/view/study_final.dart';
@@ -57,6 +58,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => QuizBloc(),
+          ),
+          BlocProvider(
+            create: (context) => AdminBloc(),
           ),
         ],
         child: MaterialApp(
