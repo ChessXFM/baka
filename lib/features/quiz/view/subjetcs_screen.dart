@@ -3,18 +3,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
 
 import '../../study table/models/study_subject_model.dart';
+
 class SubjectSelectionScreen extends StatelessWidget {
   static const String routeName = '/Subjects';
   final List<StudySubject> subjects = [
-    StudySubject('علوم', FontAwesomeIcons.flask, Colors.green,true),
-    StudySubject('رياضيات', FontAwesomeIcons.calculator, Colors.blue,true),
-    StudySubject('فيزياء', FontAwesomeIcons.atom, Colors.redAccent,true),
-    StudySubject('كيمياء', FontAwesomeIcons.flask, Colors.orange,true),
-    StudySubject('إنجليزي', FontAwesomeIcons.book, Colors.purple,true),
-    StudySubject('وطنية', FontAwesomeIcons.flag, Colors.teal,true),
+    StudySubject('علوم', FontAwesomeIcons.flask, Colors.green, true),
+    StudySubject('رياضيات', FontAwesomeIcons.calculator, Colors.blue, true),
+    StudySubject('فيزياء', FontAwesomeIcons.atom, Colors.redAccent, true),
+    StudySubject('كيمياء', FontAwesomeIcons.flask, Colors.orange, true),
+    StudySubject('إنجليزي', FontAwesomeIcons.book, Colors.purple, true),
+    StudySubject('وطنية', FontAwesomeIcons.flag, Colors.teal, true),
   ];
 
-   SubjectSelectionScreen({super.key});
+  SubjectSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,9 @@ class SubjectCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        color: subject.isLocked ? Colors.grey : subject.color, // Change color if locked
+        color: subject.isLocked
+            ? Colors.grey
+            : subject.color, // Change color if locked
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -110,11 +113,17 @@ class SubjectCard extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                if (codeController.text == 'kakashi') { // Example unlock code
+                if (codeController.text == 'kakashi') {
+                  // Example unlock code
                   subject.isLocked = false; // Unlock the subject
-                  Navigator.pushNamed(context, QuizScreen.routeName); // Close the dialog
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QuizScreen(
+                              subject: subject.name))); // Close the dialog
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('${subject.name} has been unlocked!')),
+                    SnackBar(
+                        content: Text('${subject.name} has been unlocked!')),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -122,7 +131,7 @@ class SubjectCard extends StatelessWidget {
                   );
                 }
               },
-              child:const Text('Unlock'),
+              child: const Text('Unlock'),
             ),
           ],
         );

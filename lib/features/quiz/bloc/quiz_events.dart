@@ -25,3 +25,4 @@ class SyncQuestions extends QuizEvent {
 
   SyncQuestions(this.subject);
 }
+

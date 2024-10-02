@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:game/Core/theme_helper.dart';
 import 'package:game/features/quiz/view/subjetcs_screen.dart';
-
+import '../../features/admin/view/admin_screen.dart';
 import '../../features/auth/view/Signin/signin.dart';
 import '../../features/auth/view/Signup/signup.dart';
-import '../../features/quiz/view/quiz_screen.dart';
 import '../../features/study table/view/lottie_test.dart';
 import '../../features/study table/view/study_final.dart';
 
@@ -39,8 +38,8 @@ class HomeScreen extends StatelessWidget {
               children: [
                 // أيقونة Quiz Screen
                 IconButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, SubjectSelectionScreen.routeName),
+                  onPressed: () => Navigator.pushNamed(
+                      context, SubjectSelectionScreen.routeName),
                   icon: const Icon(Icons.psychology_alt),
                   color: ThemeHelper.primaryColor,
                   iconSize: 60,
@@ -75,6 +74,20 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pushNamed(context, TestLottie.routeName),
                   icon: const Icon(Icons.animation),
                   color: Colors.purple,
+                  iconSize: 60,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.sync),
+                  color: Colors.purple,
+                  iconSize: 60,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, AdminScreen.routeName);
+                  },
+                  icon: const Icon(Icons.admin_panel_settings),
+                  color: const Color.fromARGB(255, 30, 12, 143),
                   iconSize: 60,
                 ),
               ],

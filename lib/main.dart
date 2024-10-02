@@ -11,6 +11,7 @@ import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
 import 'package:game/features/quiz/view/subjetcs_screen.dart';
 import 'package:game/features/study%20table/view/lottie_test.dart';
+import 'features/admin/view/admin_screen.dart';
 import 'features/auth/view/Signup/signup.dart';
 import 'features/study table/view/study_final.dart';
 import 'firebase_options.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
                 ),
             TestLottie.routeName: (context) => const TestLottie(),
             SignInScreen.routeName: (context) => SignInScreen(),
+            AdminScreen.routeName: (context) => AdminScreen(),
             SignUpScreen.routeName: (context) => SignUpScreen(),
             StudyTableFinal.routeName: (context) => const StudyTableFinal(),
             HomeScreen.routeName: (context) => const HomeScreen(),
