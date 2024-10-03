@@ -5,17 +5,19 @@ import 'package:game/features/quiz/model/quiz_model.dart';
 class LocalStorageService {
   Future<void> saveQuestions(String subject, List<Quiz> questions) async {
     final prefs = await SharedPreferences.getInstance();
-    // Convert the questions to a JSON format for storage
-    final questionsJson = questions
-        .map((q) => {
-              'id': q.id,
-              'question': q.question,
-              'options': q.options,
-              'correctAnswer': q.correctAnswer,
-            })
-        .toList();
+
+    // تحويل الأسئلة إلى تنسيق JSON للتخزين
+    final questionsJson = questions.map((q) {
+      return {
+        'id': q.id,
+        'question': q.question,
+        'options': q.options,
+        'correctAnswer': q.correctAnswer,
+      };
+    }).toList();
 
     await prefs.setString('${subject}_questions', jsonEncode(questionsJson));
+    print("Questions saved in shared preferences for subject: $subject");
   }
 
   Future<List<Quiz>> loadQuestions(String subject) async {
@@ -24,16 +26,28 @@ class LocalStorageService {
 
     if (questionsString != null) {
       final List<dynamic> questionsJson = jsonDecode(questionsString);
-      return questionsJson
-          .map((q) => Quiz(
-                id: q['id'],
-                question: q['question'],
-                options: List<String>.from(q['options']),
-                correctAnswer: q['correctAnswer'],
-              ))
-          .toList();
+
+      // تأكد من صحة البيانات المسترجعة وتفادي القيم null
+      List<Quiz> loadedQuestions = questionsJson.map((q) {
+        return Quiz(
+          id: q['id'] != null ? q['id'] : 'unknown_id', // التحقق من null
+          question: q['question'] != null
+              ? q['question']
+              : 'Unknown question', // التحقق من null
+          options: q['options'] != null
+              ? List<String>.from(q['options'])
+              : [], // التحقق من null
+          correctAnswer: q['correctAnswer'] != null
+              ? q['correctAnswer']
+              : 'Unknown answer', // التحقق من null
+        );
+      }).toList();
+
+      print("Questions loaded from shared preferences for subject: $subject");
+      return loadedQuestions;
     }
-    print('no questions found in shared');
-    return []; // Return an empty list if no questions found
+
+    print('No questions found in shared preferences for subject: $subject');
+    return []; // إرجاع قائمة فارغة إذا لم يتم العثور على أسئلة
   }
 }

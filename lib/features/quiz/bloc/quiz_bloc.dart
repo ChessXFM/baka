@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/features/quiz/bloc/quiz_events.dart';
 import 'package:game/features/quiz/bloc/quiz_states.dart';
 import 'package:game/features/quiz/model/quiz_model.dart';
-
 import '../services/firebase_service.dart';
 import '../services/local_storage_service.dart';
 
@@ -29,7 +28,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     Quiz(
       id: 3.toString(),
       question: "What is the name of the best framework?",
-      options: ["Flutter", "lLaravel", "IDK", "WTF!!"],
+      options: ["Flutter", "Laravel", "IDK", "WTF!!"],
       correctAnswer: "Flutter",
     ),
     Quiz(
@@ -46,7 +45,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<TimerTick>(_onTimerTick);
     on<SelectAnswer>(_onSubmitAnswer);
     on<SyncQuestions>(_onSyncQuestions);
-
   }
 
   void _startTimer() {

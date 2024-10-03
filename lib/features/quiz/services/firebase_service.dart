@@ -16,6 +16,7 @@ class FirebaseService {
         final List<Map<String, dynamic>> questions =
             List<Map<String, dynamic>>.from(doc.data()!['questions']);
         print('after convert');
+        print("Questions fetched from Firestore: $questions");
 
         // Map the data to a list of Quiz objects
         return questions.map((questionData) {

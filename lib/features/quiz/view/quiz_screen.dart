@@ -12,28 +12,32 @@ import '../bloc/quiz_events.dart';
 class QuizScreen extends StatelessWidget {
   static const String routeName = '/Quizes Screen';
   const QuizScreen({super.key, required this.subject});
- final  String subject;
+  final String subject;
+
   @override
   Widget build(BuildContext context) {
+    // Load the quiz when the screen is built
     context.read<QuizBloc>().add(LoadQuiz(subject));
+    print("Loading quiz for subject: $subject");
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            centerTitle: true,
-            title: const Text(
-              AppConstants.quizTitle,
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Lottie.asset(
-                  'assets/lottie/infinity.json',
-                  width: 50,
-                  height: 50,
-                ),
+          centerTitle: true,
+          title: const Text(
+            AppConstants.quizTitle,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Lottie.asset(
+                'assets/lottie/infinity.json',
+                width: 50,
+                height: 50,
               ),
-            ]),
+            ),
+          ],
+        ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +50,7 @@ class QuizScreen extends StatelessWidget {
                 if (state is QuizLoaded) {
                   return Column(
                     children: [
-                      _buildTimer(state.timeLeft), // Modern Timer Layout
+                      _buildTimer(state.timeLeft),
                       QuestionCard(
                         question: state
                             .questions[state.currentQuestionIndex].question,
@@ -66,10 +70,8 @@ class QuizScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text("انتهى الاختبار ! نتيجتك هي: ${state.score}"),
+                        const SizedBox(height: 20),
+                        Text("انتهى الاختبار! نتيجتك هي: ${state.score}"),
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
@@ -105,7 +107,6 @@ class QuizScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        // color: ThemeHelper.accentColor,
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(20),
       ),

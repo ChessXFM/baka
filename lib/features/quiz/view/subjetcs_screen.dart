@@ -7,8 +7,8 @@ import '../../study table/models/study_subject_model.dart';
 class SubjectSelectionScreen extends StatelessWidget {
   static const String routeName = '/Subjects';
   final List<StudySubject> subjects = [
-    StudySubject('علوم', FontAwesomeIcons.flask, Colors.green, true),
-    StudySubject('رياضيات', FontAwesomeIcons.calculator, Colors.blue, true),
+    StudySubject('Biology', FontAwesomeIcons.flask, Colors.green, true),
+    StudySubject('Math', FontAwesomeIcons.calculator, Colors.blue, true),
     StudySubject('فيزياء', FontAwesomeIcons.atom, Colors.redAccent, true),
     StudySubject('كيمياء', FontAwesomeIcons.flask, Colors.orange, true),
     StudySubject('إنجليزي', FontAwesomeIcons.book, Colors.purple, true),
