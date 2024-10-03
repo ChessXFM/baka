@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../features/quiz/model/quiz_model.dart';
 import '../features/study table/models/study_subject_model.dart';
 
 class ScreenSizeHelper {
@@ -72,5 +73,33 @@ class AppConstants {
         icon: FontAwesomeIcons.flag,
         color: Colors.teal,
         isLocked: true),
+  ];
+
+  static final List<Quiz> staticQuestions = [
+    Quiz(
+      id: 1.toString(),
+      question: "What is the capital of Syria?",
+      options: ["Damascus", "Aleppo", "Homs", "Latakia"],
+      correctAnswer: "Damascus",
+    ),
+    Quiz(
+      id: 2.toString(),
+      question: "How Are You?",
+      options: ["Fine", "Good", "Bad", "Mind Your Buiseness !!"],
+      correctAnswer: "Mind Your Buiseness !!",
+    ),
+    Quiz(
+      id: 3.toString(),
+      question: "What is the name of the best framework?",
+      options: ["Flutter", "Laravel", "IDK", "WTF!!"],
+      correctAnswer: "Flutter",
+    ),
+    Quiz(
+      id: 4.toString(),
+      question: "Random Question ?",
+      options: ["yes", "yep", "yeah", "no"],
+      correctAnswer: "yep",
+    ),
+    // Add more questions here
   ];
 }

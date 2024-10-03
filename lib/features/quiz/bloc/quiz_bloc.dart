@@ -3,7 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/features/quiz/bloc/quiz_events.dart';
 import 'package:game/features/quiz/bloc/quiz_states.dart';
-import 'package:game/features/quiz/model/quiz_model.dart';
+import '../../../Core/constant.dart';
 import '../services/firebase_service.dart';
 import '../services/local_storage_service.dart';
 
@@ -12,33 +12,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   final AudioPlayer _audioPlayer = AudioPlayer(); // Audio player instance
   final LocalStorageService localStorageService = LocalStorageService();
   final FirebaseService firebaseService = FirebaseService();
-  final List<Quiz> staticQuestions = [
-    Quiz(
-      id: 1.toString(),
-      question: "What is the capital of Syria?",
-      options: ["Damascus", "Aleppo", "Homs", "Latakia"],
-      correctAnswer: "Damascus",
-    ),
-    Quiz(
-      id: 2.toString(),
-      question: "How Are You?",
-      options: ["Fine", "Good", "Bad", "Mind Your Buiseness !!"],
-      correctAnswer: "Mind Your Buiseness !!",
-    ),
-    Quiz(
-      id: 3.toString(),
-      question: "What is the name of the best framework?",
-      options: ["Flutter", "Laravel", "IDK", "WTF!!"],
-      correctAnswer: "Flutter",
-    ),
-    Quiz(
-      id: 4.toString(),
-      question: "Random Question ?",
-      options: ["yes", "yep", "yeah", "no"],
-      correctAnswer: "yep",
-    ),
-    // Add more questions here
-  ];
 
   QuizBloc() : super(QuizInitial()) {
     on<LoadQuiz>(_onLoadQuiz);
@@ -71,7 +44,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     if (sharedQuestions.isEmpty) {
       _startTimer(); // Start timer when quiz is loaded
       emit(QuizLoaded(
-        questions: staticQuestions,
+        questions: AppConstants.staticQuestions,
         currentQuestionIndex: 0,
         selectedAnswer: '',
         score: 0,
@@ -111,8 +84,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     int newScore = currentState.score;
     if (event.selectedAnswer == question.correctAnswer) {
       newScore++;
-      _audioPlayer.play(AssetSource(
-          'sounds/wrong_answer.mp3')); // Play correct answer sound
+      _audioPlayer.play(
+          AssetSource('sounds/wrong_answer.mp3')); // Play correct answer sound
     } else {
       _audioPlayer.play(AssetSource(
           'sounds/wrong_answer.mp3')); // Play incorrect answer sound

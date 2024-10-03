@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:game/Core/constant.dart';
 import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 
-import '../../features/quiz/bloc/quiz_events.dart';
-import '../../features/study table/models/study_subject_model.dart';
+import '../../quiz/bloc/quiz_events.dart';
+import '../../study table/models/study_subject_model.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
