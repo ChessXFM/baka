@@ -9,6 +9,7 @@ import '../../features/auth/view/Signup/signup.dart';
 import '../../features/quiz/bloc/quiz_events.dart';
 import '../../features/study table/view/lottie_test.dart';
 import '../../features/study table/view/study_final.dart';
+import 'home_wdigets.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: myDrawer(context),
       appBar: AppBar(
         title: const Text("الصفحة الرئيسية"),
         centerTitle: true,

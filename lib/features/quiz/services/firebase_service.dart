@@ -12,10 +12,10 @@ class FirebaseService {
       // Check if the document exists
       if (doc.exists && doc.data() != null) {
         // Fetch the 'questions' array from the document
-        print('before convert');
+        
         final List<Map<String, dynamic>> questions =
             List<Map<String, dynamic>>.from(doc.data()!['questions']);
-        print('after convert');
+       
         print("Questions fetched from Firestore: $questions");
 
         // Map the data to a list of Quiz objects

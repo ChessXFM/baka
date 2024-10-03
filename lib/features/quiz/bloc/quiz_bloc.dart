@@ -112,10 +112,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     if (event.selectedAnswer == question.correctAnswer) {
       newScore++;
       _audioPlayer.play(AssetSource(
-          'sounds/correct_answer.mp3')); // Play correct answer sound
+          'sounds/wrong_answer.mp3')); // Play correct answer sound
     } else {
       _audioPlayer.play(AssetSource(
-          'sounds/incorrect_answer.mp3')); // Play incorrect answer sound
+          'sounds/wrong_answer.mp3')); // Play incorrect answer sound
     }
 
     // Update the userAnswers list with the latest selected answer

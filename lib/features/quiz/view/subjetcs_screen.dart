@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:game/Core/constant.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
 
 import '../../study table/models/study_subject_model.dart';
 
 class SubjectSelectionScreen extends StatelessWidget {
   static const String routeName = '/Subjects';
-  final List<StudySubject> subjects = [
-    StudySubject('Biology', FontAwesomeIcons.flask, Colors.green, true),
-    StudySubject('Math', FontAwesomeIcons.calculator, Colors.blue, true),
-    StudySubject('فيزياء', FontAwesomeIcons.atom, Colors.redAccent, true),
-    StudySubject('كيمياء', FontAwesomeIcons.flask, Colors.orange, true),
-    StudySubject('إنجليزي', FontAwesomeIcons.book, Colors.purple, true),
-    StudySubject('وطنية', FontAwesomeIcons.flag, Colors.teal, true),
-  ];
+  // final List<StudySubject> subjects = [
+  //   StudySubject('Biology', FontAwesomeIcons.flask, Colors.green, true),
+  //   StudySubject('Math', FontAwesomeIcons.calculator, Colors.blue, true),
+  //   StudySubject('فيزياء', FontAwesomeIcons.atom, Colors.redAccent, true),
+  //   StudySubject('كيمياء', FontAwesomeIcons.flask, Colors.orange, true),
+  //   StudySubject('إنجليزي', FontAwesomeIcons.book, Colors.purple, true),
+  //   StudySubject('وطنية', FontAwesomeIcons.flag, Colors.teal, true),
+  // ];
 
   SubjectSelectionScreen({super.key});
 
@@ -41,9 +42,10 @@ class SubjectSelectionScreen extends StatelessWidget {
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
-                itemCount: subjects.length,
+                itemCount: AppConstants.availableSubjects.length,
                 itemBuilder: (context, index) {
-                  return SubjectCard(subject: subjects[index]);
+                  return SubjectCard(
+                      subject: AppConstants.availableSubjects[index]);
                 },
               ),
             ),
