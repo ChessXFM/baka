@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/Core/theme_helper.dart';
-import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 import 'package:game/features/quiz/view/subjetcs_screen.dart';
 import '../../features/admin/view/admin_screen.dart';
 import '../../features/auth/view/Signin/signin.dart';
 import '../../features/auth/view/Signup/signup.dart';
-import '../../features/quiz/bloc/quiz_events.dart';
 import '../../features/study table/view/lottie_test.dart';
 import '../../features/study table/view/study_final.dart';
 import 'home_wdigets.dart';
@@ -18,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(context),
+      drawer: const MyDrawer(),
       appBar: AppBar(
         title: const Text("الصفحة الرئيسية"),
         centerTitle: true,
@@ -81,15 +78,15 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.purple,
                   iconSize: 60,
                 ),
-                IconButton(
-                  onPressed: () {
-                    BlocProvider.of<QuizBloc>(context)
-                        .add(SyncQuestions('Biology'));
-                  },
-                  icon: const Icon(Icons.sync),
-                  color: Colors.purple,
-                  iconSize: 60,
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     BlocProvider.of<QuizBloc>(context)
+                //         .add(SyncQuestions('Biology'));
+                //   },
+                //   icon: const Icon(Icons.sync),
+                //   color: Colors.purple,
+                //   iconSize: 60,
+                // ),
                 IconButton(
                   onPressed: () {
                     Navigator.pushNamed(context, AdminScreen.routeName);
