@@ -87,7 +87,7 @@ class SubjectCard extends StatelessWidget {
             FaIcon(subject.icon, size: 40, color: Colors.white),
             const SizedBox(height: 8),
             Text(
-              subject.name,
+              subject.arabicName,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class SubjectCard extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Unlock ${subject.name}'),
+          title: Text('Unlock ${subject.arabicName}'),
           content: TextField(
             controller: codeController,
             decoration: const InputDecoration(hintText: 'Enter unlock code'),

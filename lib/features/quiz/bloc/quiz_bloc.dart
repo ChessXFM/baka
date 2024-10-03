@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/features/quiz/bloc/quiz_events.dart';
 import 'package:game/features/quiz/bloc/quiz_states.dart';
@@ -117,44 +118,83 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     }
   }
 
-  // Add a new method to handle SyncQuestions
-  void _onSyncQuestions(SyncQuestions event, Emitter<QuizState> emit) async {
-    // Emit a loading state while fetching questions
-    emit(QuizLoading());
 
-    try {
-      // Fetch new questions from Firebase
-      final newQuestions =
-          await firebaseService.fetchNewQuestions(event.subject);
+void _onSyncQuestions(SyncQuestions event, Emitter<QuizState> emit) async {
+  emit(QuizLoading());
 
-      // Load existing questions from local storage to avoid duplicates
-      final existingQuestions =
-          await localStorageService.loadQuestions(event.subject);
+  try {
+    // Fetch new questions from Firebase
+    final newQuestions = await firebaseService.fetchNewQuestions(event.subject);
 
-      // Combine existing questions with new ones, avoiding duplicates
+    // Load existing questions from local storage
+    final existingQuestions = await localStorageService.loadQuestions(event.subject);
+
+    // Merge existing and new questions
       final allQuestions = [
         ...existingQuestions,
         ...newQuestions.where((newQuestion) => !existingQuestions
             .any((existingQuestion) => existingQuestion.id == newQuestion.id)),
       ];
 
-      // Save all combined questions to local storage
-      await localStorageService.saveQuestions(event.subject, allQuestions);
+    // Save merged questions to local storage
+    await localStorageService.saveQuestions(event.subject, allQuestions);
 
-      // Emit the loaded state with the updated questions
-      emit(QuizLoaded(
-        questions: allQuestions,
-        currentQuestionIndex: 0,
-        selectedAnswer: '',
-        score: 0,
-        timeLeft: 30, // or however you manage the timer
-        userAnswers: const [],
-      ));
-    } catch (error) {
-      // Handle any errors during fetching or saving
-      emit(QuizError(error: "Failed to sync questions: $error"));
-    }
+    // Emit the loaded state
+    emit(QuizLoaded(
+      questions: allQuestions,
+      currentQuestionIndex: 0,
+      selectedAnswer: '',
+      score: 0,
+      timeLeft: 30, // example timer
+      userAnswers: const [],
+    ));
+  } on FirebaseException catch (e) {
+    // Emit a specific error state for Firebase issues
+    emit(QuizError(error: "Firebase error: ${e.message}"));
+  } catch (error) {
+    // Emit a general error state for other issues
+    emit(QuizError(error: "An unexpected error occurred: $error"));
   }
+}
+
+  // // Add a new method to handle SyncQuestions
+  // void _onSyncQuestions(SyncQuestions event, Emitter<QuizState> emit) async {
+  //   // Emit a loading state while fetching questions
+  //   emit(QuizLoading());
+
+  //   try {
+  //     // Fetch new questions from Firebase
+  //     final newQuestions =
+  //         await firebaseService.fetchNewQuestions(event.subject);
+
+  //     // Load existing questions from local storage to avoid duplicates
+  //     final existingQuestions =
+  //         await localStorageService.loadQuestions(event.subject);
+
+  //     // Combine existing questions with new ones, avoiding duplicates
+  //     final allQuestions = [
+  //       ...existingQuestions,
+  //       ...newQuestions.where((newQuestion) => !existingQuestions
+  //           .any((existingQuestion) => existingQuestion.id == newQuestion.id)),
+  //     ];
+
+  //     // Save all combined questions to local storage
+  //     await localStorageService.saveQuestions(event.subject, allQuestions);
+
+  //     // Emit the loaded state with the updated questions
+  //     emit(QuizLoaded(
+  //       questions: allQuestions,
+  //       currentQuestionIndex: 0,
+  //       selectedAnswer: '',
+  //       score: 0,
+  //       timeLeft: 30, // or however you manage the timer
+  //       userAnswers: const [],
+  //     ));
+  //   } catch (error) {
+  //     // Handle any errors during fetching or saving
+  //     emit(QuizError(error: "Failed to sync questions: $error"));
+  //   }
+  // }
 
   @override
   Future<void> close() {

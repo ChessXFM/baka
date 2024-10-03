@@ -5,6 +5,7 @@ import 'package:game/Core/constant.dart';
 import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 
 import '../../quiz/bloc/quiz_events.dart';
+import '../../quiz/bloc/quiz_states.dart';
 import '../../study table/models/study_subject_model.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -53,37 +54,67 @@ class MyDrawer extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('اختر مادة'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        child: BlocBuilder<QuizBloc, QuizState>(
+                          builder: (context, state) {
+                            if (state is QuizError) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      state.error, // Display the error message
+                                      style: const TextStyle(color: Colors.red),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Retry the sync operation
+                                        // BlocProvider.of<QuizBloc>(context)
+                                        //     .add(SyncQuestions(subjectName));
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Go Back'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount:
+                                    AppConstants.availableSubjects.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  StudySubject subject =
+                                      AppConstants.availableSubjects[index];
 
-                  showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('اختر مادة'),
-                    content: SizedBox(
-                      width: double.maxFinite,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: AppConstants.availableSubjects.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          StudySubject subject =
-                              AppConstants.availableSubjects[index];
+                                  return ListTile(
+                                    leading: FaIcon(subject.icon,
+                                        color: subject.color),
+                                    title: Text(subject.arabicName),
+                                    tileColor: null,
+                                    onTap: () async {
+                                      BlocProvider.of<QuizBloc>(context)
+                                          .add(SyncQuestions(subject.name));
 
-                          return ListTile(
-                            leading: FaIcon(subject.icon, color: subject.color),
-                            title: Text(subject.name),
-                            tileColor: null,
-                            onTap: () async {
-                              BlocProvider.of<QuizBloc>(context)
-                                  .add(SyncQuestions(subject.name));
-                              Navigator.of(context).pop();
-                            },
-                          );
-                        },
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
+                    );
+                  },
+                );
                 // Handle sync action
               },
             ),
