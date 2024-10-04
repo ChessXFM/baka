@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:game/Core/constant.dart';
+import 'package:game/Core/theme_helper.dart';
 import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 
 import '../../quiz/bloc/quiz_events.dart';
@@ -15,7 +16,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.black87, // Dark mode background
+        color: ThemeHelper.otherprimaryColor, // Dark mode background
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,7 +64,7 @@ class MyDrawer extends StatelessWidget {
                         width: double.maxFinite,
                         child: BlocBuilder<QuizBloc, QuizState>(
                           builder: (context, state) {
-                            if (state is QuizError) {
+                            if (state is QuizErrorState) {
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

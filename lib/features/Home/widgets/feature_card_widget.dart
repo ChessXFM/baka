@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game/Core/theme_helper.dart';
 
 class FeatureCard extends StatefulWidget {
   final IconData icon;
@@ -47,25 +48,30 @@ class _FeatureCardState extends State<FeatureCard>
           return Stack(
             children: [
               Card(
-                color: Colors.white,
+                // color: ThemeHelper.accentColor,
+
+                // color: Colors.white,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(widget.icon, size: 50, color: widget.color),
-                    const SizedBox(height: 10),
-                    Text(
-                      widget.label,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(widget.icon, size: 70, color: widget.color),
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.label,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          // fontWeight: FontWeight.w600,
+                          // color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               // Adding the shimmer-like effect

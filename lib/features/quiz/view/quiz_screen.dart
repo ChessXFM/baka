@@ -43,11 +43,11 @@ class QuizScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
-                if (state is QuizInitial) {
+                if (state is QuizInitialState) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                if (state is QuizLoaded) {
+                if (state is QuizLoadedState) {
                   return Column(
                     children: [
                       _buildTimer(state.timeLeft),
@@ -65,7 +65,7 @@ class QuizScreen extends StatelessWidget {
                   );
                 }
 
-                if (state is QuizCompleted) {
+                if (state is QuizCompletedState) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

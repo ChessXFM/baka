@@ -16,11 +16,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: ThemeHelper.primaryColor,
       drawer: const MyDrawer(),
       appBar: AppBar(
         title: const Text("الصفحة الرئيسية"),
         centerTitle: true,
-        backgroundColor: ThemeHelper.primaryColor,
+        // backgroundColor: ThemeHelper.otherprimaryColor,
         elevation: 4,
       ),
       body: Padding(
@@ -32,46 +33,47 @@ class HomeScreen extends StatelessWidget {
             const Text(
               'مرحبا بك !',
               style: TextStyle(
+                // color: Colors.white,
                 fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                // fontWeight: FontWeight.bold,
+                // color: Color.fromARGB(221, 255, 255, 255),
                 letterSpacing: 1.2,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
 
             // Modern Card-based icons grid with animation
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2, // Two cards per row
-                crossAxisSpacing: 20, // Space between columns
-                mainAxisSpacing: 20, // Space between rows
+                crossAxisSpacing: 5, // Space between columns
+                mainAxisSpacing: 5, // Space between rows
                 children: [
                   FeatureCard(
                     icon: Icons.psychology_alt,
-                    label: 'Quiz',
+                    label: 'اختبر نفسك',
                     color: ThemeHelper.primaryColor,
                     onTap: () => Navigator.pushNamed(
                         context, SubjectSelectionScreen.routeName),
                   ),
                   FeatureCard(
                     icon: Icons.table_chart,
-                    label: 'Study Table',
+                    label: 'جدول الدراسة',
                     color: Colors.green,
                     onTap: () =>
                         Navigator.pushNamed(context, StudyTableFinal.routeName),
                   ),
                   FeatureCard(
                     icon: Icons.login,
-                    label: 'Sign In',
+                    label: "تسجيل الدخول",
                     color: Colors.blue,
                     onTap: () =>
                         Navigator.pushNamed(context, SignInScreen.routeName),
                   ),
                   FeatureCard(
                     icon: Icons.app_registration,
-                    label: 'Sign Up',
+                    label: 'التسجيل',
                     color: Colors.orange,
                     onTap: () =>
                         Navigator.pushNamed(context, SignUpScreen.routeName),
@@ -82,6 +84,20 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.purple,
                     onTap: () =>
                         Navigator.pushNamed(context, TestLottie.routeName),
+                  ),
+                  FeatureCard(
+                    icon: Icons.admin_panel_settings,
+                    label: 'Admin Panel',
+                    color: const Color.fromARGB(255, 30, 12, 143),
+                    onTap: () =>
+                        Navigator.pushNamed(context, AdminScreen.routeName),
+                  ),
+                  FeatureCard(
+                    icon: Icons.admin_panel_settings,
+                    label: 'Admin Panel',
+                    color: const Color.fromARGB(255, 30, 12, 143),
+                    onTap: () =>
+                        Navigator.pushNamed(context, AdminScreen.routeName),
                   ),
                   FeatureCard(
                     icon: Icons.admin_panel_settings,

@@ -207,20 +207,23 @@ class _StudyTableFinalState extends State<StudyTableFinal>
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
+          // backgroundColor: ThemeHelper.otherprimaryColor,
           appBar: AppBar(
+            // backgroundColor: ThemeHelper.primaryColor,
             centerTitle: true,
-            title: const Text('خطة الدراسة الأسبوعية'),
+            title: const Text(
+              'خطة الدراسة الأسبوعية',
+            ),
           ),
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const SizedBox(height: 10),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: buildStudyTable(),
-                  ),
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  child: buildStudyTable(),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -245,8 +248,11 @@ class _StudyTableFinalState extends State<StudyTableFinal>
 
   Widget buildStudyTable() {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      decoration: BoxDecoration(
+        border: Border.all(width: 3, color: ThemeHelper.primaryColor),
+        borderRadius: BorderRadius.circular(8),
+        color: ThemeHelper.primaryColor.withOpacity(0.3),
       ),
       child: Table(
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -280,7 +286,7 @@ class _StudyTableFinalState extends State<StudyTableFinal>
     return Container(
       margin: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(8),
         color: ThemeHelper.otherprimaryColor,
       ),
       height: 50,
@@ -310,7 +316,8 @@ class _StudyTableFinalState extends State<StudyTableFinal>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: selectedSubject?.color.withOpacity(0.2) ?? Colors.white,
+          color: selectedSubject?.color.withOpacity(0.2) ??
+              ThemeHelper.accentColor,
         ),
         margin: const EdgeInsets.all(4.0),
         height: 50,
@@ -329,9 +336,13 @@ class _StudyTableFinalState extends State<StudyTableFinal>
 
   Widget buildDayCell(String day) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: ThemeHelper.otherprimaryColor,
+      ),
       margin: const EdgeInsets.all(4.0),
       height: 50,
-      color: ThemeHelper.otherprimaryColor,
+      // color: ThemeHelper.secondaryColor,
       alignment: Alignment.center,
       child: Text(
         day,

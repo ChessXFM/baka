@@ -67,7 +67,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: const HomeScreen(),
           theme: ThemeData(
-            brightness: Brightness.dark,
+            scaffoldBackgroundColor: ThemeHelper.accentColor,
+            appBarTheme: AppBarTheme(color: ThemeHelper.otherprimaryColor),
+            brightness: Brightness.light,
             fontFamily: 'Amiri',
             primaryColor: ThemeHelper.otherprimaryColor,
             primaryColorDark: ThemeHelper.otherprimaryColor,

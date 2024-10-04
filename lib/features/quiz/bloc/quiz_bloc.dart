@@ -14,11 +14,12 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   final LocalStorageService localStorageService = LocalStorageService();
   final FirebaseService firebaseService = FirebaseService();
 
-  QuizBloc() : super(QuizInitial()) {
+  QuizBloc() : super(QuizInitialState()) {
     on<LoadQuiz>(_onLoadQuiz);
     on<TimerTick>(_onTimerTick);
     on<SelectAnswer>(_onSubmitAnswer);
     on<SyncQuestions>(_onSyncQuestions);
+    on<AddQuestionEvent>(_onAddQuestion);
   }
 
   void _startTimer() {
@@ -44,7 +45,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         await localStorageService.loadQuestions(event.subject);
     if (sharedQuestions.isEmpty) {
       _startTimer(); // Start timer when quiz is loaded
-      emit(QuizLoaded(
+      emit(QuizLoadedState(
         questions: AppConstants.staticQuestions,
         currentQuestionIndex: 0,
         selectedAnswer: '',
@@ -54,7 +55,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       ));
     } else {
       _startTimer(); // Start timer when quiz is loaded
-      emit(QuizLoaded(
+      emit(QuizLoadedState(
         questions: sharedQuestions,
         currentQuestionIndex: 0,
         selectedAnswer: '',
@@ -66,8 +67,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   }
 
   void _onTimerTick(TimerTick event, Emitter<QuizState> emit) {
-    final currentState = state as QuizLoaded;
-    emit(QuizLoaded(
+    final currentState = state as QuizLoadedState;
+    emit(QuizLoadedState(
       questions: currentState.questions,
       currentQuestionIndex: currentState.currentQuestionIndex,
       selectedAnswer: currentState.selectedAnswer,
@@ -79,7 +80,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   void _onSubmitAnswer(SelectAnswer event, Emitter<QuizState> emit) {
     _timer?.cancel(); // Stop the timer when the answer is submitted
-    final currentState = state as QuizLoaded;
+    final currentState = state as QuizLoadedState;
     final question = currentState.questions[currentState.currentQuestionIndex];
 
     int newScore = currentState.score;
@@ -99,7 +100,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     ];
 
     if (currentState.currentQuestionIndex + 1 < currentState.questions.length) {
-      emit(QuizLoaded(
+      emit(QuizLoadedState(
         questions: currentState.questions,
         currentQuestionIndex: currentState.currentQuestionIndex + 1,
         selectedAnswer: '', // Reset for the next question
@@ -109,7 +110,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       ));
       _startTimer(); // Start a new timer for the next question
     } else {
-      emit(QuizCompleted(
+      emit(QuizCompletedState(
         score: newScore,
         questions: currentState.questions,
         userAnswers:
@@ -118,83 +119,62 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     }
   }
 
+  void _onSyncQuestions(SyncQuestions event, Emitter<QuizState> emit) async {
+    emit(QuizLoadingState());
 
-void _onSyncQuestions(SyncQuestions event, Emitter<QuizState> emit) async {
-  emit(QuizLoading());
+    try {
+      // Fetch new questions from Firebase
+      final newQuestions =
+          await firebaseService.fetchNewQuestions(event.subject);
 
-  try {
-    // Fetch new questions from Firebase
-    final newQuestions = await firebaseService.fetchNewQuestions(event.subject);
+      // Load existing questions from local storage
+      final existingQuestions =
+          await localStorageService.loadQuestions(event.subject);
 
-    // Load existing questions from local storage
-    final existingQuestions = await localStorageService.loadQuestions(event.subject);
-
-    // Merge existing and new questions
+      // Merge existing and new questions
       final allQuestions = [
         ...existingQuestions,
         ...newQuestions.where((newQuestion) => !existingQuestions
             .any((existingQuestion) => existingQuestion.id == newQuestion.id)),
       ];
 
-    // Save merged questions to local storage
-    await localStorageService.saveQuestions(event.subject, allQuestions);
+      // Save merged questions to local storage
+      await localStorageService.saveQuestions(event.subject, allQuestions);
 
-    // Emit the loaded state
-    emit(QuizLoaded(
-      questions: allQuestions,
-      currentQuestionIndex: 0,
-      selectedAnswer: '',
-      score: 0,
-      timeLeft: 30, // example timer
-      userAnswers: const [],
-    ));
-  } on FirebaseException catch (e) {
-    // Emit a specific error state for Firebase issues
-    emit(QuizError(error: "Firebase error: ${e.message}"));
-  } catch (error) {
-    // Emit a general error state for other issues
-    emit(QuizError(error: "An unexpected error occurred: $error"));
+      // Emit the loaded state
+      emit(QuizLoadedState(
+        questions: allQuestions,
+        currentQuestionIndex: 0,
+        selectedAnswer: '',
+        score: 0,
+        timeLeft: 30, // example timer
+        userAnswers: const [],
+      ));
+    } on FirebaseException catch (e) {
+      // Emit a specific error state for Firebase issues
+      emit(QuizErrorState(error: "Firebase error: ${e.message}"));
+    } catch (error) {
+      // Emit a general error state for other issues
+      emit(QuizErrorState(error: "An unexpected error occurred: $error"));
+    }
   }
-}
 
-  // // Add a new method to handle SyncQuestions
-  // void _onSyncQuestions(SyncQuestions event, Emitter<QuizState> emit) async {
-  //   // Emit a loading state while fetching questions
-  //   emit(QuizLoading());
+// Handler for adding a question to Firebase
+  Future<void> _onAddQuestion(
+      AddQuestionEvent event, Emitter<QuizState> emit) async {
+    emit(AddingQuestionState());
 
-  //   try {
-  //     // Fetch new questions from Firebase
-  //     final newQuestions =
-  //         await firebaseService.fetchNewQuestions(event.subject);
+    try {
+      // Call the Firebase service to add the question
+      await firebaseService.addQuestion(event.subject, event.question);
 
-  //     // Load existing questions from local storage to avoid duplicates
-  //     final existingQuestions =
-  //         await localStorageService.loadQuestions(event.subject);
-
-  //     // Combine existing questions with new ones, avoiding duplicates
-  //     final allQuestions = [
-  //       ...existingQuestions,
-  //       ...newQuestions.where((newQuestion) => !existingQuestions
-  //           .any((existingQuestion) => existingQuestion.id == newQuestion.id)),
-  //     ];
-
-  //     // Save all combined questions to local storage
-  //     await localStorageService.saveQuestions(event.subject, allQuestions);
-
-  //     // Emit the loaded state with the updated questions
-  //     emit(QuizLoaded(
-  //       questions: allQuestions,
-  //       currentQuestionIndex: 0,
-  //       selectedAnswer: '',
-  //       score: 0,
-  //       timeLeft: 30, // or however you manage the timer
-  //       userAnswers: const [],
-  //     ));
-  //   } catch (error) {
-  //     // Handle any errors during fetching or saving
-  //     emit(QuizError(error: "Failed to sync questions: $error"));
-  //   }
-  // }
+      // Emit success state if the question is added successfully
+      emit(QuestionAddedSuccessState());
+    } catch (e) {
+      // Emit failure state if an error occurs
+      emit(QuestionAddedFailureState(errorMessage: e.toString()));
+    }
+  }
 
   @override
   Future<void> close() {

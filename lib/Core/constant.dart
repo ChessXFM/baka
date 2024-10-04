@@ -26,7 +26,15 @@ const List<String> studySubjects = [
 class AppConstants {
   static const String quizTitle = "Quiz";
   static const String submitButtonLabel = "Submit";
-
+  static const List<String> availableSubjectsList = [
+    'Math1',
+    'Math2',
+    'Physics',
+    'English',
+    'Biology',
+    'Chemistry',
+    'National'
+  ];
   static final List<StudySubject> availableSubjects = [
     StudySubject(
       name: 'Math1',

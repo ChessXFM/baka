@@ -8,11 +8,11 @@ abstract class QuizState extends Equatable {
   List<Object> get props => [];
 }
 
-class QuizInitial extends QuizState {}
+class QuizInitialState extends QuizState {}
 
-class QuizLoading extends QuizState {}
+class QuizLoadingState extends QuizState {}
 
-class QuizLoaded extends QuizState {
+class QuizLoadedState extends QuizState {
   final List<Quiz> questions;
   final int currentQuestionIndex;
   final String selectedAnswer;
@@ -20,7 +20,7 @@ class QuizLoaded extends QuizState {
   final int timeLeft;
   final List<String> userAnswers;
 
-  const QuizLoaded({
+  const QuizLoadedState({
     required this.questions,
     required this.currentQuestionIndex,
     required this.selectedAnswer,
@@ -40,12 +40,12 @@ class QuizLoaded extends QuizState {
       ];
 }
 
-class QuizCompleted extends QuizState {
+class QuizCompletedState extends QuizState {
   final int score;
   final List<Quiz> questions;
   final List<String> userAnswers;
 
-  const QuizCompleted({
+  const QuizCompletedState({
     required this.score,
     required this.questions,
     required this.userAnswers,
@@ -55,9 +55,25 @@ class QuizCompleted extends QuizState {
   List<Object> get props => [score, questions, userAnswers];
 }
 
-class QuizError extends QuizState {
+class QuizErrorState extends QuizState {
   final String error;
-  const QuizError({
+  const QuizErrorState({
     required this.error,
   });
+}
+
+// State when adding question is in progress
+class AddingQuestionState extends QuizState {}
+
+// State when adding question is successful
+class QuestionAddedSuccessState extends QuizState {}
+
+// State when adding question fails
+class QuestionAddedFailureState extends QuizState {
+  final String errorMessage;
+
+  const QuestionAddedFailureState({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
 }
