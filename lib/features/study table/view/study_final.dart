@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:game/Core/constant.dart';
+// import 'package:game/Core/constant.dart';
 import 'package:game/Core/theme_helper.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -22,15 +22,52 @@ class _StudyTableFinalState extends State<StudyTableFinal>
     with WidgetsBindingObserver {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  // final List<StudySubject> availableSubjects = [
-  //   StudySubject('الرياضيات', FontAwesomeIcons.calculator, Colors.blue,true),
-  //   StudySubject('الفيزياء', FontAwesomeIcons.atom, Colors.redAccent,true),
-  //   StudySubject('اللغة الإنجليزية', FontAwesomeIcons.book, Colors.purple,true),
-  //   StudySubject('علم الأحياء', FontAwesomeIcons.dna, Colors.orange,true),
-  //   StudySubject('الكيمياء', FontAwesomeIcons.flask, Colors.green,true),
-  //   StudySubject('التربية الوطنية', FontAwesomeIcons.flag, Colors.teal,true),
-  // ];
+  static final List<StudySubject> availableSubjects = [
+    StudySubject(
+      name: 'Math1',
+      arabicName: 'الرياضيات الجزء الأوّل',
+      icon: FontAwesomeIcons.calculator,
+      color: Colors.blue,
+      isLocked: true,
+    ),
+    StudySubject(
+      name: 'Math2',
+      arabicName: 'الرياضيات الجزء الثاني',
+      icon: FontAwesomeIcons.calculator,
+      color: Colors.blue,
+      isLocked: true,
+    ),
+    StudySubject(
+        name: 'Physics',
+        arabicName: 'الفيزياء',
+        icon: FontAwesomeIcons.atom,
+        color: Colors.redAccent,
+        isLocked: true),
+    StudySubject(
+        name: 'English',
+        arabicName: 'اللغة الإنجليزية',
+        icon: FontAwesomeIcons.book,
+        color: Colors.purple,
+        isLocked: true),
+    StudySubject(
+        name: 'Biology',
+        arabicName: 'علم الأحياء',
+        icon: FontAwesomeIcons.dna,
+        color: Colors.orange,
+        isLocked: true),
+    StudySubject(
+        name: 'Chemistry',
+        arabicName: 'الكيمياء',
+        icon: FontAwesomeIcons.flask,
+        color: Colors.green,
+        isLocked: true),
+    StudySubject(
+        name: 'National',
+        arabicName: 'التربية الوطنية',
+        icon: FontAwesomeIcons.flag,
+        color: Colors.teal,
+        isLocked: true),
+  ];
 
   final List<String> days = [
     'الاثنين',
@@ -95,7 +132,7 @@ class _StudyTableFinalState extends State<StudyTableFinal>
         selectedSubjects = savedData.map((key, value) {
           return MapEntry(
             key,
-            AppConstants.availableSubjects.firstWhere(
+            availableSubjects.firstWhere(
               (subject) => subject.name == value['name'],
             ),
           );
@@ -317,9 +354,9 @@ class _StudyTableFinalState extends State<StudyTableFinal>
             width: double.maxFinite,
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: AppConstants.availableSubjects.length,
+              itemCount: availableSubjects.length,
               itemBuilder: (BuildContext context, int index) {
-                StudySubject subject = AppConstants.availableSubjects[index];
+                StudySubject subject = availableSubjects[index];
                 bool isSelected = selectedSubjects[key] == subject;
 
                 return ListTile(
