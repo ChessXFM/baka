@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../model/quiz_model.dart';
-
 abstract class QuizEvent extends Equatable {
   const QuizEvent();
 
@@ -43,13 +41,13 @@ class SyncQuestions extends QuizEvent {
   List<Object> get props => [subject];
 }
 
-// Event for adding a single question
-class AddQuestionEvent extends QuizEvent {
-  final String subject;
-  final Quiz question;
+// // Event for adding a single question
+// class AddQuestionEvent extends QuizEvent {
+//   final String subject;
+//   final Quiz question;
 
-  const AddQuestionEvent({required this.subject, required this.question});
+//   const AddQuestionEvent({required this.subject, required this.question});
 
-  @override
-  List<Object> get props => [subject, question];
-}
+//   @override
+//   List<Object> get props => [subject, question];
+// }

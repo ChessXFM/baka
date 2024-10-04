@@ -1,12 +1,28 @@
 // admin_state.dart
-abstract class AdminState {}
+import 'package:equatable/equatable.dart';
 
-class AdminInitial extends AdminState {}
+abstract class AdminState extends Equatable {
+  const AdminState();
 
-class QuestionAddedSuccess extends AdminState {}
+  @override
+  List<Object> get props => [];
+}
 
-class QuestionAddFailed extends AdminState {
-  final String error;
+class AdminInitialState extends AdminState {}
 
-  QuestionAddFailed(this.error);
+//
+// State when adding question is in progress
+class AddingQuestionState extends AdminState {}
+
+// State when adding question is successful
+class QuestionAddedSuccessState extends AdminState {}
+
+// State when adding question fails
+class QuestionAddedFailureState extends AdminState {
+  final String errorMessage;
+
+  const QuestionAddedFailureState({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
 }

@@ -66,14 +66,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: const HomeScreen(),
-          theme: ThemeData(
-            scaffoldBackgroundColor: ThemeHelper.accentColor,
-            appBarTheme: AppBarTheme(color: ThemeHelper.otherprimaryColor),
-            brightness: Brightness.light,
-            fontFamily: 'Amiri',
-            primaryColor: ThemeHelper.otherprimaryColor,
-            primaryColorDark: ThemeHelper.otherprimaryColor,
-          ),
+          theme: ThemeHelper.myTheme,
           routes: {
             SubjectSelectionScreen.routeName: (context) =>
                 SubjectSelectionScreen(),

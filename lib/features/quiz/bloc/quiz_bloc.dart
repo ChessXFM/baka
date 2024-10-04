@@ -19,7 +19,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<TimerTick>(_onTimerTick);
     on<SelectAnswer>(_onSubmitAnswer);
     on<SyncQuestions>(_onSyncQuestions);
-    on<AddQuestionEvent>(_onAddQuestion);
+    // on<AddQuestionEvent>(_onAddQuestion);
   }
 
   void _startTimer() {
@@ -159,22 +159,22 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     }
   }
 
-// Handler for adding a question to Firebase
-  Future<void> _onAddQuestion(
-      AddQuestionEvent event, Emitter<QuizState> emit) async {
-    emit(AddingQuestionState());
+// // Handler for adding a question to Firebase
+//   Future<void> _onAddQuestion(
+//       AddQuestionEvent event, Emitter<QuizState> emit) async {
+//     emit(AddingQuestionState());
 
-    try {
-      // Call the Firebase service to add the question
-      await firebaseService.addQuestion(event.subject, event.question);
+//     try {
+//       // Call the Firebase service to add the question
+//       await firebaseService.addQuestion(event.subject, event.question);
 
-      // Emit success state if the question is added successfully
-      emit(QuestionAddedSuccessState());
-    } catch (e) {
-      // Emit failure state if an error occurs
-      emit(QuestionAddedFailureState(errorMessage: e.toString()));
-    }
-  }
+//       // Emit success state if the question is added successfully
+//       emit(QuestionAddedSuccessState());
+//     } catch (e) {
+//       // Emit failure state if an error occurs
+//       emit(QuestionAddedFailureState(errorMessage: e.toString()));
+//     }
+//   }
 
   @override
   Future<void> close() {

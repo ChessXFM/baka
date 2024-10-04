@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:game/Core/theme_helper.dart';
 
 class FeatureCard extends StatefulWidget {
   final IconData icon;
