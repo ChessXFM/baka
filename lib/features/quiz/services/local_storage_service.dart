@@ -98,5 +98,30 @@ class LocalStorageService {
     print("Questions updated in Hive for subject: $subject");
   }
 
-//
+//// Function to save unlocked status for a subject
+  Future<void> saveUnlockedSubject(String subject, bool isUnlocked) async {
+    final box = await Hive.openBox('subjectsBox'); // Open the box
+
+    await box.put(subject, isUnlocked); // Store the unlocked status
+    print("Unlocked status for subject '$subject' saved: $isUnlocked");
+  }
+
+  // Function to load the unlocked status for a subject
+  Future<bool> loadUnlockedSubject(String subject) async {
+    final box = await Hive.openBox('subjectsBox'); // Open the box
+
+    // Retrieve the unlocked status, default to false if not found
+    final isUnlocked = box.get(subject, defaultValue: false);
+    print("Unlocked status for subject '$subject' loaded: $isUnlocked");
+    return isUnlocked;
+  }
+
+  // Optional: Function to clear all unlocked subjects (for testing or reset purposes)
+  Future<void> clearUnlockedSubjects() async {
+    final box = await Hive.openBox('subjectsBox');
+    await box.clear();
+    print("All unlocked subjects cleared.");
+  }
+
+  //
 }

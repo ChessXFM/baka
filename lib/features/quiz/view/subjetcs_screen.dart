@@ -16,7 +16,7 @@ class SubjectSelectionScreen extends StatelessWidget {
   //   StudySubject('وطنية', FontAwesomeIcons.flag, Colors.teal, true),
   // ];
 
-  SubjectSelectionScreen({super.key});
+  const SubjectSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +68,10 @@ class SubjectCard extends StatelessWidget {
         if (subject.isLocked) {
           _showUnlockDialog(context, subject);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('تم اختيار المادة: ${subject.name}')),
-          );
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => QuizScreen(subject: subject.name))); //
         }
       },
       child: Card(
