@@ -9,94 +9,132 @@ import 'package:lottie/lottie.dart';
 import '../bloc/quiz_bloc.dart';
 import '../bloc/quiz_events.dart';
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   static const String routeName = '/Quizes Screen';
   const QuizScreen({super.key, required this.subject});
+
   final String subject;
 
   @override
-  Widget build(BuildContext context) {
+  _QuizScreenState createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  // late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
     // Load the quiz when the screen is built
-    context.read<QuizBloc>().add(LoadQuiz(subject));
-    print("Loading quiz for subject: $subject");
+    context.read<QuizBloc>().add(LoadQuiz(widget.subject));
+    print("Loading quiz for subject: ${widget.subject}");
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            AppConstants.quizTitle,
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Lottie.asset(
-                'assets/lottie/infinity.json',
-                width: 50,
-                height: 50,
+    // Initialize your timer or any other resource here if necessary
+    // _startTimer();
+  }
+
+  // void _startTimer() {
+  //   // Example: Start a timer for the quiz duration
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     // Your timer logic here
+  //   });
+  // }
+
+  @override
+  void dispose() {
+    // Stop the timer when the user navigates away from this screen
+    // _timer.cancel();
+    super.dispose();
+  }
+
+  Future<bool> _onWillPop() async {
+    // Perform any cleanup if necessary here
+    // _timer.cancel(); // Optionally cancel timer if navigating back
+    super.dispose();
+
+    return true; // Allow back navigation
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(AppConstants.quizTitle),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Lottie.asset(
+                  'assets/lottie/infinity.json',
+                  width: 50,
+                  height: 50,
+                ),
               ),
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
-                if (state is QuizInitialState) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
+                  if (state is QuizInitialState) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (state is QuizLoadedState) {
-                  return Column(
-                    children: [
-                      _buildTimer(state.timeLeft),
-                      QuestionCard(
-                        question: state
-                            .questions[state.currentQuestionIndex].question,
-                        options:
-                            state.questions[state.currentQuestionIndex].options,
-                        selectedAnswer: state.selectedAnswer,
-                        onSelect: (value) {
-                          context.read<QuizBloc>().add(SelectAnswer(value!));
-                        },
-                      ),
-                    ],
-                  );
-                }
-
-                if (state is QuizCompletedState) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  if (state is QuizLoadedState) {
+                    return Column(
                       children: [
-                        const SizedBox(height: 20),
-                        Text("انتهى الاختبار! نتيجتك هي: ${state.score}"),
-                        ElevatedButton(
-                          style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  ThemeHelper.otherprimaryColor)),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReviewScreen(
-                                  questions: state.questions,
-                                  userAnswers: state.userAnswers,
-                                ),
-                              ),
-                            );
+                        _buildTimer(state.timeLeft),
+                        QuestionCard(
+                          question: state
+                              .questions[state.currentQuestionIndex].question,
+                          options: state
+                              .questions[state.currentQuestionIndex].options,
+                          selectedAnswer: state.selectedAnswer,
+                          onSelect: (value) {
+                            context.read<QuizBloc>().add(SelectAnswer(value!));
                           },
-                          child: const Text("Review Answers"),
                         ),
                       ],
-                    ),
-                  );
-                }
+                    );
+                  }
 
-                return const Center(child: Text('An error occurred!'));
-              }),
-            ],
+                  if (state is QuizCompletedState) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 20),
+                          Text("انتهى الاختبار! نتيجتك هي: ${state.score}"),
+                          ElevatedButton(
+                            style: const ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                    ThemeHelper.otherprimaryColor)),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReviewScreen(
+                                    questions: state.questions,
+                                    userAnswers: state.userAnswers,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text("مراجعة الإجابات"),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return const Center(child: Text('حدث خطأ ما ؟؟'));
+                }),
+              ],
+            ),
           ),
         ),
       ),
@@ -121,7 +159,6 @@ class QuizScreen extends StatelessWidget {
             strokeWidth: 8,
           ),
           const SizedBox(width: 20),
-          // Timer text display
           Text(
             '$timeLeft',
             style: const TextStyle(
