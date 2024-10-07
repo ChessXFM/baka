@@ -11,6 +11,8 @@ import 'package:game/features/quiz/bloc/quiz_bloc.dart';
 import 'package:game/features/quiz/view/quiz_screen.dart';
 import 'package:game/features/quiz/view/subjetcs_screen.dart';
 import 'package:game/features/study%20table/view/lottie_test.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'features/admin/bloc/admin_bloc.dart';
 import 'features/admin/view/admin_screen.dart';
 import 'features/auth/view/Signup/signup.dart';
@@ -39,6 +41,8 @@ void main(List<String> args) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Hive.initFlutter(); // Initialize Hive for Flutter
+  await Hive.openBox('quizBox'); // Open a box for quiz questions
   runApp(MyApp());
 }
 

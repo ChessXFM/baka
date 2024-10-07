@@ -1,9 +1,12 @@
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:game/features/quiz/model/quiz_model.dart';
 
 class LocalStorageService {
-  Future<void> saveQuestions(String subject, List<Quiz> questions) async {
+///////!  SHARED PREF  !///////
+  Future<void> saveQuestionsWithShared(
+      String subject, List<Quiz> questions) async {
     final prefs = await SharedPreferences.getInstance();
 
     // تحويل الأسئلة إلى تنسيق JSON للتخزين
@@ -20,7 +23,7 @@ class LocalStorageService {
     print("Questions saved in shared preferences for subject: $subject");
   }
 
-  Future<List<Quiz>> loadQuestions(String subject) async {
+  Future<List<Quiz>> loadQuestionsWithShared(String subject) async {
     final prefs = await SharedPreferences.getInstance();
     final String? questionsString = prefs.getString('${subject}_questions');
 
@@ -50,4 +53,50 @@ class LocalStorageService {
     print('No questions found in shared preferences for subject: $subject');
     return []; // إرجاع قائمة فارغة إذا لم يتم العثور على أسئلة
   }
+
+///////!  HIVE  !///////
+// save
+  Future<void> saveQuestions(String subject, List<Quiz> questions) async {
+    final box = await Hive.openBox<Quiz>('quizBox');
+
+    // Save each question in the Hive box
+    for (Quiz question in questions) {
+      await box.put('${subject}_${question.id}', question);
+    }
+
+    print("Questions saved in Hive for subject: $subject");
+  }
+
+// load
+  Future<List<Quiz>> loadQuestions(String subject) async {
+    final box = await Hive.openBox<Quiz>('quizBox');
+
+    // Filter questions by subject and load them from the Hive box
+    final questions = box.values
+        .where((q) =>
+            q.id.startsWith(subject)) // Assuming you tag questions with subject
+        .toList();
+
+    if (questions.isNotEmpty) {
+      print("Questions loaded from Hive for subject: $subject");
+      return questions.cast<Quiz>();
+    }
+
+    print('No questions found in Hive for subject: $subject');
+    return [];
+  }
+
+// update
+  Future<void> updateQuestions(String subject, List<Quiz> newQuestions) async {
+    final box = await Hive.openBox<Quiz>('quizBox');
+
+    for (var question in newQuestions) {
+      // Replace or add new questions
+      await box.put('${subject}_${question.id}', question);
+    }
+
+    print("Questions updated in Hive for subject: $subject");
+  }
+
+//
 }

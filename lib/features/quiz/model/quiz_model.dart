@@ -1,7 +1,19 @@
-class Quiz {
-  final String id; // Unique identifier
+import 'package:hive/hive.dart';
+
+part 'quiz_model.g.dart'; // Ensure this line is present
+
+@HiveType(typeId: 0)
+class Quiz extends HiveObject {
+  @HiveField(0)
+  final String id;
+
+  @HiveField(1)
   final String question;
+
+  @HiveField(2)
   final List<String> options;
+
+  @HiveField(3)
   final String correctAnswer;
 
   Quiz({
@@ -10,13 +22,4 @@ class Quiz {
     required this.options,
     required this.correctAnswer,
   });
-  factory Quiz.fromJson(Map<String, dynamic> json) {
-  return Quiz(
-    id: json['id'],
-    question: json['question'],
-    options: List<String>.from(json['options']),
-    correctAnswer: json['correctAnswer'],
-  );
-}
-
 }
