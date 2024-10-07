@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game/Core/constant.dart';
-import 'package:game/features/admin/bloc/admin_bloc.dart';
-import 'package:game/features/quiz/model/quiz_model.dart';
+
+import '../../../Core/constant.dart';
+import '../../quiz/model/quiz_model.dart';
+import '../bloc/admin_bloc.dart';
 import '../bloc/admin_event.dart';
 import '../bloc/admin_state.dart';
 

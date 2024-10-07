@@ -1,4 +1,5 @@
-// admin_state.dart
+
+
 import 'package:equatable/equatable.dart';
 
 abstract class AdminState extends Equatable {

@@ -1,4 +1,5 @@
-// admin_event.dart
+
+
 import 'package:equatable/equatable.dart';
 
 import '../../quiz/model/quiz_model.dart';
