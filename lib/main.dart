@@ -42,7 +42,7 @@ void main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Hive.initFlutter(); // Initialize Hive for Flutter
-  await Hive.openBox('quizBox'); // Open a box for quiz questions
+ // await Hive.openBox('quizBox'); // Open a box for quiz questions
   runApp(MyApp());
 }
 
