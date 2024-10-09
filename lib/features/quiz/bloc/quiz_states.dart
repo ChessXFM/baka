@@ -62,18 +62,11 @@ class QuizErrorState extends QuizState {
   });
 }
 
-// // State when adding question is in progress
-// class AddingQuestionState extends QuizState {}
+class SubjectUnlockedState extends QuizState {
+  final List<String> unlockedSubjects;
 
-// // State when adding question is successful
-// class QuestionAddedSuccessState extends QuizState {}
+  const SubjectUnlockedState(this.unlockedSubjects);
 
-// // State when adding question fails
-// class QuestionAddedFailureState extends QuizState {
-//   final String errorMessage;
-
-//   const QuestionAddedFailureState({required this.errorMessage});
-
-//   @override
-//   List<Object> get props => [errorMessage];
-// }
+  @override
+  List<Object> get props => [unlockedSubjects];
+}

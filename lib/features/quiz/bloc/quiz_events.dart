@@ -41,13 +41,11 @@ class SyncQuestions extends QuizEvent {
   List<Object> get props => [subject];
 }
 
-// // Event for adding a single question
-// class AddQuestionEvent extends QuizEvent {
-//   final String subject;
-//   final Quiz question;
+class UnlockSubject extends QuizEvent {
+  final String subjectName;
 
-//   const AddQuestionEvent({required this.subject, required this.question});
+  const UnlockSubject(this.subjectName);
 
-//   @override
-//   List<Object> get props => [subject, question];
-// }
+  @override
+  List<Object> get props => [subjectName];
+}

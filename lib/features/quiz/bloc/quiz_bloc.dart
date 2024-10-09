@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/features/quiz/bloc/quiz_events.dart';
 import 'package:game/features/quiz/bloc/quiz_states.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Core/constant.dart';
 import '../services/firebase_service.dart';
 import '../services/local_storage_service.dart';
@@ -19,8 +20,27 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<TimerTick>(_onTimerTick);
     on<SelectAnswer>(_onSubmitAnswer);
     on<SyncQuestions>(_onSyncQuestions);
-    // on<AddQuestionEvent>(_onAddQuestion);
+    on<UnlockSubject>(_onUnlockSubject);
   }
+Future<QuizState> _onUnlockSubject(UnlockSubject event, Emitter<QuizState> emit) async {
+  // Get the instance of SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  
+  // Retrieve the list of unlocked subjects, or initialize it if it doesn't exist
+  List<String> unlockedSubjects = prefs.getStringList('unlockedSubjects') ?? [];
+
+  // Check if the subject is already unlocked
+  if (!unlockedSubjects.contains(event.subjectName)) {
+    // If not, add the subject to the list
+    unlockedSubjects.add(event.subjectName);
+    
+    // Save the updated list back to SharedPreferences
+    await prefs.setStringList('unlockedSubjects', unlockedSubjects);
+  }
+
+  // Return the new state with the updated list of unlocked subjects
+  return SubjectUnlockedState(unlockedSubjects);
+}
 
   void _startTimer() {
     const duration = Duration(seconds: 1);
@@ -162,22 +182,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     }
   }
 
-// // Handler for adding a question to Firebase
-//   Future<void> _onAddQuestion(
-//       AddQuestionEvent event, Emitter<QuizState> emit) async {
-//     emit(AddingQuestionState());
-
-//     try {
-//       // Call the Firebase service to add the question
-//       await firebaseService.addQuestion(event.subject, event.question);
-
-//       // Emit success state if the question is added successfully
-//       emit(QuestionAddedSuccessState());
-//     } catch (e) {
-//       // Emit failure state if an error occurs
-//       emit(QuestionAddedFailureState(errorMessage: e.toString()));
-//     }
-//   }
 
   @override
   Future<void> close() {

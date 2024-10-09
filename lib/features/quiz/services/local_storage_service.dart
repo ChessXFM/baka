@@ -1,6 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 import 'package:game/features/quiz/model/quiz_model.dart';
 
 class LocalStorageService {
@@ -85,25 +83,6 @@ class LocalStorageService {
     print("Loaded ${questions.length} questions for subject: $subject");
     return questions;
   }
-
-// // load
-//   Future<List<Quiz>> loadQuestions(String subject) async {
-//     final box = await Hive.openBox<Quiz>('quizBox');
-
-//     // Filter questions by subject and load them from the Hive box
-//     final questions = box.values
-//         .where((q) =>
-//             q.id.startsWith(subject)) // Assuming you tag questions with subject
-//         .toList();
-
-//     if (questions.isNotEmpty) {
-//       print("Questions loaded from Hive for subject: $subject");
-//       return questions.cast<Quiz>();
-//     }
-
-//     print('No questions found in Hive for subject: $subject');
-//     return [];
-//   }
 
 // update
   Future<void> updateQuestions(String subject, List<Quiz> newQuestions) async {
