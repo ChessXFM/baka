@@ -79,6 +79,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   }
 
   void _onSubmitAnswer(SelectAnswer event, Emitter<QuizState> emit) {
+    _audioPlayer.stop();
     _timer?.cancel(); // Stop the timer when the answer is submitted
     final currentState = state as QuizLoadedState;
     final question = currentState.questions[currentState.currentQuestionIndex];
@@ -86,13 +87,13 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     int newScore = currentState.score;
     if (event.selectedAnswer == question.correctAnswer) {
       newScore++;
-      _audioPlayer.stop();
-      _audioPlayer.play(
-          AssetSource('sounds/wrong_answer.mp3')); // Play correct answer sound
+      // _audioPlayer.stop();
+      _audioPlayer
+          .play(AssetSource('sounds/correct.mp3')); // Play correct answer sound
     } else {
-      _audioPlayer.stop();
-      _audioPlayer.play(AssetSource(
-          'sounds/wrong_answer.mp3')); // Play incorrect answer sound
+      // _audioPlayer.stop();
+      _audioPlayer.play(
+          AssetSource('sounds/correct.mp3')); // Play incorrect answer sound
     }
 
     // Update the userAnswers list with the latest selected answer
