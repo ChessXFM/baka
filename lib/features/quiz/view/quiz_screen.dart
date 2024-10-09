@@ -21,17 +21,33 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   // late Timer _timer;
+  QuizBloc? _quizBloc; // Store the QuizBloc instance
 
   @override
-  void initState() {
-    super.initState();
-    // Load the quiz when the screen is built
-    context.read<QuizBloc>().add(LoadQuiz(widget.subject));
-    print("Loading quiz for subject: ${widget.subject}");
-
-    // Initialize your timer or any other resource here if necessary
-    // _startTimer();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_quizBloc == null) {
+      _quizBloc = context.read<QuizBloc>(); // Safely initialize the QuizBloc
+      _quizBloc!.add(LoadQuiz(widget.subject));
+      print("Loading quiz for subject: ${widget.subject}");
+    }
   }
+
+  @override
+  void dispose() {
+    // _quizBloc?.close(); // Safely close the QuizBloc
+    super.dispose();
+  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Load the quiz when the screen is built
+  //   context.read<QuizBloc>().add(LoadQuiz(widget.subject));
+  //   print("Loading quiz for subject: ${widget.subject}");
+
+  //   // Initialize your timer or any other resource here if necessary
+  //   // _startTimer();
+  // }
 
   // void _startTimer() {
   //   // Example: Start a timer for the quiz duration
@@ -40,19 +56,21 @@ class _QuizScreenState extends State<QuizScreen> {
   //   });
   // }
 
-  @override
-  void dispose() {
-    // Stop the timer when the user navigates away from this screen
-    // _timer.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // Stop the timer when the user navigates away from this screen
+  //   context.read<QuizBloc>().close();
+  //   // _timer.cancel();
+  //   super.dispose();
+  // }
 
   Future<bool> _onWillPop() async {
     // Perform any cleanup if necessary here
     // _timer.cancel(); // Optionally cancel timer if navigating back
-    super.dispose();
+    // context.read<QuizBloc>().close();
+    // super.dispose();
 
-    return true; // Allow back navigation
+    return false; // Deny back navigation
   }
 
   @override
@@ -114,7 +132,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 backgroundColor: MaterialStatePropertyAll(
                                     ThemeHelper.otherprimaryColor)),
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ReviewScreen(

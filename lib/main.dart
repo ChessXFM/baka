@@ -16,6 +16,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'features/admin/bloc/admin_bloc.dart';
 import 'features/admin/view/admin_screen.dart';
 import 'features/auth/view/Signup/signup.dart';
+import 'features/quiz/model/quiz_model.dart';
 import 'features/study table/view/study_final.dart';
 import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -42,7 +43,9 @@ void main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Hive.initFlutter(); // Initialize Hive for Flutter
- // await Hive.openBox('quizBox'); // Open a box for quiz questions
+  // await Hive.openBox('quizBox'); // Open a box for quiz questions
+  // Register the adapter
+  Hive.registerAdapter(QuizAdapter());
   runApp(MyApp());
 }
 

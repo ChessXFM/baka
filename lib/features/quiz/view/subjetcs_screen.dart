@@ -119,6 +119,7 @@ class SubjectCard extends StatelessWidget {
                 if (codeController.text == 'kakashi') {
                   // Example unlock code
                   subject.isLocked = false; // Unlock the subject
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
