@@ -86,9 +86,11 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     int newScore = currentState.score;
     if (event.selectedAnswer == question.correctAnswer) {
       newScore++;
+      _audioPlayer.stop();
       _audioPlayer.play(
           AssetSource('sounds/wrong_answer.mp3')); // Play correct answer sound
     } else {
+      _audioPlayer.stop();
       _audioPlayer.play(AssetSource(
           'sounds/wrong_answer.mp3')); // Play incorrect answer sound
     }
