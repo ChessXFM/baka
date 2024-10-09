@@ -65,26 +65,28 @@ class MyDrawer extends StatelessWidget {
                         child: BlocBuilder<QuizBloc, QuizState>(
                           builder: (context, state) {
                             if (state is QuizErrorState) {
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      state.error, // Display the error message
-                                      style: const TextStyle(color: Colors.red),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Retry the sync operation
-                                        // BlocProvider.of<QuizBloc>(context)
-                                        //     .add(SyncQuestions(subjectName));
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('Go Back'),
-                                    ),
-                                  ],
-                                ),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount:
+                                    AppConstants.availableSubjects.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  StudySubject subject =
+                                      AppConstants.availableSubjects[index];
+
+                                  return ListTile(
+                                    leading: FaIcon(subject.icon,
+                                        color: subject.color),
+                                    title: Text(subject.arabicName),
+                                    tileColor: const Color.fromARGB(
+                                        255, 255, 212, 212),
+                                    onTap: () async {
+                                      BlocProvider.of<QuizBloc>(context).add(
+                                          SyncQuestions(subject.arabicName));
+
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                },
                               );
                             } else {
                               return ListView.builder(
@@ -101,8 +103,8 @@ class MyDrawer extends StatelessWidget {
                                     title: Text(subject.arabicName),
                                     tileColor: null,
                                     onTap: () async {
-                                      BlocProvider.of<QuizBloc>(context)
-                                          .add(SyncQuestions(subject.name));
+                                      BlocProvider.of<QuizBloc>(context).add(
+                                          SyncQuestions(subject.arabicName));
 
                                       Navigator.of(context).pop();
                                     },
@@ -147,84 +149,3 @@ class MyDrawer extends StatelessWidget {
     );
   }
 }
-
-// myDrawer(BuildContext context) {
-//   return Drawer(
-//     child: Container(
-//       color: Colors.black,
-//       child: ListView(
-//         padding: EdgeInsets.zero,
-//         children: <Widget>[
-//           const UserAccountsDrawerHeader(
-//             decoration: BoxDecoration(color: Colors.black),
-//             currentAccountPicture: CircleAvatar(
-//               backgroundImage: AssetImage('assets/images/logo.png'),
-//             ),
-//             accountName: Text(
-//               'Ammar AlQudaimi',
-//               style: TextStyle(color: Colors.white),
-//             ),
-//             accountEmail: null,
-//           ),
-//           ListTile(
-//             title: const Text(
-//               'Settings',
-//               style: TextStyle(color: Colors.white),
-//             ),
-//             onTap: () {
-//               // Handle settings button tap
-//             },
-//           ),
-//           ListTile(
-//             title: const Text(
-//               'Sync',
-//               style: TextStyle(color: Colors.white),
-//             ),
-//             onTap: () {
-//               // Handle sync button tap
-//               showDialog(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return AlertDialog(
-//                     title: const Text('اختر مادة'),
-//                     content: SizedBox(
-//                       width: double.maxFinite,
-//                       child: ListView.builder(
-//                         shrinkWrap: true,
-//                         itemCount: AppConstants.availableSubjects.length,
-//                         itemBuilder: (BuildContext context, int index) {
-//                           StudySubject subject =
-//                               AppConstants.availableSubjects[index];
-
-//                           return ListTile(
-//                             leading: FaIcon(subject.icon, color: subject.color),
-//                             title: Text(subject.name),
-//                             tileColor: null,
-//                             onTap: () async {
-//                               BlocProvider.of<QuizBloc>(context)
-//                                   .add(SyncQuestions(subject.name));
-//                               Navigator.of(context).pop();
-//                             },
-//                           );
-//                         },
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               );
-//             },
-//           ),
-//           ListTile(
-//             title: const Text(
-//               'Go Premium',
-//               style: TextStyle(color: Colors.white),
-//             ),
-//             onTap: () {
-//               // Handle premium button tap
-//             },
-//           ),
-//         ],
-//       ),
-//     ),
-//   );
-// }
