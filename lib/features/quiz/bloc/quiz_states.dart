@@ -70,3 +70,11 @@ class SubjectUnlockedState extends QuizState {
   @override
   List<Object> get props => [unlockedSubjects];
 }
+class GettingUnlockedSubjectsState extends QuizState {
+  final List<String> unlockedSubjects;
+
+  const GettingUnlockedSubjectsState(this.unlockedSubjects);
+
+  @override
+  List<Object> get props => [unlockedSubjects];
+}

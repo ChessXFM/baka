@@ -21,26 +21,40 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<SelectAnswer>(_onSubmitAnswer);
     on<SyncQuestions>(_onSyncQuestions);
     on<UnlockSubject>(_onUnlockSubject);
-  }
-Future<QuizState> _onUnlockSubject(UnlockSubject event, Emitter<QuizState> emit) async {
-  // Get the instance of SharedPreferences
-  final prefs = await SharedPreferences.getInstance();
-  
-  // Retrieve the list of unlocked subjects, or initialize it if it doesn't exist
-  List<String> unlockedSubjects = prefs.getStringList('unlockedSubjects') ?? [];
-
-  // Check if the subject is already unlocked
-  if (!unlockedSubjects.contains(event.subjectName)) {
-    // If not, add the subject to the list
-    unlockedSubjects.add(event.subjectName);
-    
-    // Save the updated list back to SharedPreferences
-    await prefs.setStringList('unlockedSubjects', unlockedSubjects);
+    on<GetUnlockedSubjects>(_onGetUnlockedSubjects);
   }
 
-  // Return the new state with the updated list of unlocked subjects
-  return SubjectUnlockedState(unlockedSubjects);
-}
+  void _onGetUnlockedSubjects(
+      GetUnlockedSubjects event, Emitter<QuizState> emit) async {
+    // Get the instance of SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    // Retrieve the list of unlocked subjects, or initialize it if it doesn't exist
+    List<String> unlockedSubjects =
+        prefs.getStringList('unlockedSubjects') ?? [];
+
+    emit(SubjectUnlockedState(unlockedSubjects));
+  }
+
+  void _onUnlockSubject(UnlockSubject event, Emitter<QuizState> emit) async {
+    // Get the instance of SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+
+    // Retrieve the list of unlocked subjects, or initialize it if it doesn't exist
+    List<String> unlockedSubjects =
+        prefs.getStringList('unlockedSubjects') ?? [];
+
+    // Check if the subject is already unlocked
+    if (!unlockedSubjects.contains(event.subjectName)) {
+      // If not, add the subject to the list
+      unlockedSubjects.add(event.subjectName);
+
+      // Save the updated list back to SharedPreferences
+      await prefs.setStringList('unlockedSubjects', unlockedSubjects);
+    }
+    emit(SubjectUnlockedState(unlockedSubjects));
+    // // Return the new state with the updated list of unlocked subjects
+    // return SubjectUnlockedState(unlockedSubjects);
+  }
 
   void _startTimer() {
     const duration = Duration(seconds: 1);
@@ -181,7 +195,6 @@ Future<QuizState> _onUnlockSubject(UnlockSubject event, Emitter<QuizState> emit)
       emit(QuizErrorState(error: "An unexpected error occurred: $error"));
     }
   }
-
 
   @override
   Future<void> close() {

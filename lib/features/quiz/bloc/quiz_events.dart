@@ -49,3 +49,10 @@ class UnlockSubject extends QuizEvent {
   @override
   List<Object> get props => [subjectName];
 }
+
+class GetUnlockedSubjects extends QuizEvent {
+  const GetUnlockedSubjects();
+
+  @override
+  List<Object> get props => [];
+}
